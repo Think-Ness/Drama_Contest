@@ -1,0 +1,9 @@
+# Ignore zip backups and temporary debug scripts
+*.zip
+*.log
+.tempmediaStorage/
+search_pdf.py
+probe.js
+preface_page_*.png
+node_modules/
+.wrangler/
