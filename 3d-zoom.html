@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="description" content="English Drama Contest 1448/2026 — Real-Time 3D Deep-Zoom Scrollytelling Experience. PMDG." />
+  <title>English Drama Contest 1448 / 2026 — 3D Deep-Zoom Scrollytelling</title>
+
+  <!-- Google Fonts & Custom Vogun Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    @font-face {
+      font-family: 'Vogun';
+      src: url('public/fonts/Vogun-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --font-vogun: 'Vogun', 'Cinzel', serif;
+      --font-serif: 'Cinzel', serif;
+      --font-editorial: 'Playfair Display', serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --bg-stage: #070103;
+      --bg-maroon: #3E0713;
+      --gold-primary: #D4AF37;
+      --gold-light: #F3E5AB;
+      --gold-dark: #8A6B05;
+      --text-ivory: #FDFBF7;
+      --text-muted: #A39B8B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-stage);
+      color: var(--text-ivory);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fixed Navigation Header */
+    .nav-header {
+      position: fixed;
+      top: 0;
+      inset-x: 0;
+      height: 72px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 48px);
+      background: linear-gradient(180deg, rgba(7, 1, 3, 0.95) 0%, rgba(7, 1, 3, 0.4) 70%, transparent 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-crown {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: var(--gold-primary);
+      stroke-width: 1.5;
+    }
+
+    .brand-text {
+      font-family: var(--font-vogun);
+      font-size: 14px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .mode-switch-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 4px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-pill:hover, .nav-pill.active {
+      background: rgba(212, 175, 55, 0.22);
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+      color: #FFF;
+    }
+
+    /* Track that drives scroll progress (1200vh for ultra-smooth zoom pacing) */
+    .zoom-scroll-track {
+      height: 1200vh;
+      position: relative;
+    }
+
+    /* Fixed 3D Theatre Viewport */
+    .zoom-viewport {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-stage);
+      perspective: 1200px;
+    }
+
+    /* Canvas for Ambient Golden Sparkles */
+    #sparkle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    /* 3D Zoom Scene Layer Container */
+    .stage-canvas-3d {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* Clean Image Layer Planes */
+    .zoom-plane {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      will-change: transform, opacity;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+
+    .zoom-plane.next {
+      z-index: 1;
+    }
+
+    .zoom-plane.current {
+      z-index: 2;
+    }
+
+    /* Theatrical Vignette & Spotlights */
+    .theatre-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(7, 1, 3, 0.8) 75%, #070103 100%);
+    }
+
+    .theatre-spotlight {
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 120vh;
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.16) 0%, transparent 65%);
+      transform: rotate(32deg);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    /* Film Noise Grain Overlay */
+    .theatre-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      pointer-events: none;
+      opacity: 0.04;
+      filter: url(#grainNoise);
+    }
+
+    /* Storytelling Overlay Card */
+    .story-card-wrap {
+      position: relative;
+      z-index: 20;
+      max-width: 760px;
+      width: calc(100% - 40px);
+      padding: clamp(24px, 5vw, 44px);
+      text-align: center;
+      background: rgba(18, 3, 7, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 6px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(243, 229, 171, 0.2);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .scene-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .scene-headline {
+      font-family: var(--font-vogun);
+      font-size: clamp(28px, 6vw, 56px);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: #FFF;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95);
+    }
+
+    .scene-body {
+      font-family: var(--font-sans);
+      font-size: clamp(14px, 2.5vw, 16px);
+      color: var(--text-ivory);
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto;
+      font-weight: 300;
+      opacity: 0.92;
+    }
+
+    .scene-action-btn {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #070103;
+      background: linear-gradient(90deg, #D4AF37, #F3E5AB, #D4AF37);
+      background-size: 200% auto;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .scene-action-btn:hover {
+      background-position: right center;
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.6);
+    }
+
+    /* Bottom HUD Progress Indicator */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      inset-x: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .scene-indicator-track {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      background: rgba(7, 1, 3, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 8px 16px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 24px;
+    }
+
+    .scene-dot-puck {
+      width: 6px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .scene-dot-puck.active {
+      width: 24px;
+      background: var(--gold-primary);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+    }
+
+    .scroll-hint-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: bounceHint 2s infinite ease-in-out;
+    }
+
+    @keyframes bounceHint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
+    }
+
+    /* Smartbook Modal */
+    .smartbook-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(16px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .smartbook-drawer.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .drawer-content {
+      width: 100%;
+      max-width: 640px;
+      height: 100%;
+      background: #0C0205;
+      border-left: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 40px 32px;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .smartbook-drawer.open .drawer-content {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .drawer-title {
+      font-family: var(--font-vogun);
+      font-size: 22px;
+      color: var(--gold-light);
+      letter-spacing: 0.12em;
+    }
+
+    .drawer-close-btn {
+      background: none;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold-light);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .plays-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .play-card {
+      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      transition: border-color 0.25s ease;
+    }
+
+    .play-card:hover {
+      border-color: var(--gold-primary);
+    }
+
+    .play-poster-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .play-card-meta {
+      flex: 1;
+    }
+
+    .play-chap {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gold-primary);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .play-dorm-title {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFF;
+      margin: 2px 0 4px;
+    }
+
+    .play-quote-snippet {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SVG Filter Noise -->
+  <svg class="svg-defs" style="display:none;" aria-hidden="true">
+    <filter id="grainNoise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.04 0" />
+    </filter>
+  </svg>
+
+  <!-- Navigation Header -->
+  <header class="nav-header">
+    <a href="index.html" class="brand-group" title="Back to Index">
+      <svg class="brand-crown" viewBox="0 0 24 24">
+        <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/>
+        <rect x="3" y="18" width="18" height="2" rx="1"/>
+      </svg>
+      <span class="brand-text">ENGLISH DRAMA CONTEST 1448</span>
+    </a>
+
+    <!-- Page Switcher -->
+    <nav class="mode-switch-group">
+      <a href="index.html" class="nav-pill">
+        <span>VIDEO 1</span>
+      </a>
+      <a href="video2.html" class="nav-pill">
+        <span>VIDEO 2 (MASTER)</span>
+      </a>
+      <a href="3d-zoom.html" class="nav-pill active">
+        <span>3D DEEP-ZOOM</span>
+      </a>
+      <button id="btn-open-plays" class="nav-pill" style="cursor:pointer; background:rgba(212,175,55,0.25);">
+        <span>15 PLAYS</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Track that defines scroll distance -->
+  <div id="zoom-track" class="zoom-scroll-track"></div>
+
+  <!-- Sticky 3D Canvas Viewport -->
+  <main class="zoom-viewport">
+    
+    <!-- Golden Dust Particle Canvas -->
+    <canvas id="sparkle-canvas"></canvas>
+
+    <!-- 3D Image Canvas Planes -->
+    <div class="stage-canvas-3d">
+      <!-- Next Plane (Emerges from focal point behind) -->
+      <div id="plane-next" class="zoom-plane next"></div>
+      
+      <!-- Current Plane (Zooms deep into focal point) -->
+      <div id="plane-current" class="zoom-plane current"></div>
+    </div>
+
+    <!-- Theatrical Spotlights & Vignette -->
+    <div class="theatre-spotlight" aria-hidden="true"></div>
+    <div class="theatre-vignette" aria-hidden="true"></div>
+    <div class="theatre-grain" aria-hidden="true"></div>
+
+    <!-- Editorial Storytelling Card -->
+    <div id="story-card" class="story-card-wrap">
+      <span id="scene-tag" class="scene-tag">ACT I · THE SEALED SUMMONS</span>
+      <h1 id="scene-headline" class="scene-headline">ARE YOU READY?</h1>
+      <p id="scene-body" class="scene-body">
+        Somethings are meant for you. Sentuh atau gulir layar perlahan untuk menembus segel lilin merah teater.
+      </p>
+      <div id="scene-action-wrap" style="display:none;">
+        <a href="#playbills" id="btn-scene-action" class="scene-action-btn">
+          <span>BUKA 15 NASKAH DRAMA</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom HUD Indicator -->
+    <div class="bottom-bar">
+      <div class="scene-indicator-track">
+        <div class="scene-dot-puck active" data-scene="0"></div>
+        <div class="scene-dot-puck" data-scene="1"></div>
+        <div class="scene-dot-puck" data-scene="2"></div>
+        <div class="scene-dot-puck" data-scene="3"></div>
+        <div class="scene-dot-puck" data-scene="4"></div>
+        <div class="scene-dot-puck" data-scene="5"></div>
+        <div class="scene-dot-puck" data-scene="6"></div>
+        <div class="scene-dot-puck" data-scene="7"></div>
+      </div>
+      <div class="scroll-hint-label">
+        <span id="scene-status-text">SCENE 01 / 08 · SCROLL TO GO INSIDE</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+    </div>
+  </main>
+
+  <!-- 15 Plays Smartbook Drawer -->
+  <div id="smartbook-drawer" class="smartbook-drawer" role="dialog" aria-modal="true">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2 class="drawer-title">15 PLAYS SMARTBOOK</h2>
+        <button id="btn-close-drawer" class="drawer-close-btn" aria-label="Close Drawer">&times;</button>
+      </div>
+      <div id="drawer-plays-grid" class="plays-grid"></div>
+    </div>
+  </div>
+
+  <!-- Shared Data -->
+  <script src="js/data.js"></script>
+
+  <script>
+    'use strict';
+
+    // 8 Scenes Configuration using Clean Images
+    const SCENES = [
+      {
+        id: 1,
+        image: "public/images/scene-clean/ARE YOU READY.png",
+        subtitle: "A Grand Masquerade of English Drama Contest",
+        title: "ARE YOU READY?",
+        description: "Somethings are meant for you. Sentuh atau gulir layar untuk menembus segel lilin merah teater.",
+        focalPoint: "50% 62%",
+      },
+      {
+        id: 2,
+        image: "public/images/scene-clean/h-2.png",
+        subtitle: "The Final Countdown",
+        title: "GET READY FOR THE STAGE",
+        description: "Panggilan menuju panggung kehormatan telah tiba. Persiapkan mentalitas, keberanian, dan bahasamu.",
+        focalPoint: "50% 62%",
+      },
+      {
+        id: 3,
+        image: "public/images/scene-clean/D DAY.png",
+        subtitle: "The Day Has Finally Come",
+        title: "RISE OF THE STAGE",
+        description: "Jumat, 16 Oktober 2026 • Pukul 08.00 WIB • New BPPM / Meeting Hall PMDG.",
+        focalPoint: "65% 50%",
+      },
+      {
+        id: 4,
+        image: "public/images/scene-clean/ROIS.png",
+        subtitle: "The Architects of The Arena",
+        title: "OUR LEADERS",
+        description: "Dikawal oleh Layts (5F), Abyan (5H), dan Birliyan (5M) di balik kemegahan panggung kehormatan.",
+        focalPoint: "50% 45%",
+      },
+      {
+        id: 5,
+        image: "public/images/scene-clean/introduce.png",
+        subtitle: "The Sacred Altar",
+        title: "THE PODIUM AWAITS",
+        description: "Tempat di mana ribuan jam latihan, keringat, dan persaudaraan santri diuji di hadapan publik.",
+        focalPoint: "50% 68%",
+      },
+      {
+        id: 6,
+        image: "public/images/scene-clean/introduce 2.png",
+        subtitle: "Logo Philosophy",
+        title: "LANGUAGE IS OUR CROWN",
+        description: "Whoever masters English will grab the whole world, just like a king.",
+        focalPoint: "50% 50%",
+        hasAction: true,
+      },
+      {
+        id: 7,
+        image: "public/images/scene-clean/hari h aja.png",
+        subtitle: "October 16, 2026 • At New BPPM",
+        title: "LET THE LIGHT SHINE OUR STAGE",
+        description: "Show up and explore the unyielding creativity and dramatic mastery at English Drama Contest.",
+        focalPoint: "38% 60%",
+      },
+      {
+        id: 8,
+        image: "public/images/scene-clean/who will be the winner.png",
+        subtitle: "15 Dormitories • 1 Ultimate Crown",
+        title: "WHO WILL BE THE WINNER?",
+        description: "Kesenian itu terhormat, orang yang tidak hormat pada kesenian berarti dia tidak terhormat.",
+        focalPoint: "50% 35%",
+        hasAction: true,
+      }
+    ];
+
+    const planeCurrent = document.getElementById('plane-current');
+    const planeNext = document.getElementById('plane-next');
+    const storyCard = document.getElementById('story-card');
+    const sceneTag = document.getElementById('scene-tag');
+    const sceneHeadline = document.getElementById('scene-headline');
+    const sceneBody = document.getElementById('scene-body');
+    const sceneActionWrap = document.getElementById('scene-action-wrap');
+    const sceneStatusText = document.getElementById('scene-status-text');
+    const dotPucks = Array.from(document.querySelectorAll('.scene-dot-puck'));
+
+    let currentActiveIdx = -1;
+
+    function updateZoomScrolly() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll <= 0) return;
+
+      let p = scrollTop / maxScroll;
+
+      // Infinite loop wrap
+      if (p >= 0.996) {
+        window.scrollTo({ top: maxScroll * 0.005, behavior: 'instant' });
+        p = 0.005;
+      }
+
+      const totalScenes = SCENES.length;
+      const exactSceneIndex = p * totalScenes;
+      const activeIndex = Math.min(Math.floor(exactSceneIndex), totalScenes - 1);
+      const nextIndex = (activeIndex + 1) % totalScenes;
+      const sceneLocalProgress = exactSceneIndex - activeIndex; // 0.0 to 1.0
+
+      const currentScene = SCENES[activeIndex];
+      const nextScene = SCENES[nextIndex];
+
+      // Deep Zoom Mathematical Scaling
+      const currentScale = 1 + Math.pow(sceneLocalProgress, 2.2) * 3.8;
+      const currentOpacity = sceneLocalProgress > 0.65 ? 1 - (sceneLocalProgress - 0.65) / 0.35 : 1;
+
+      const nextScale = 0.45 + sceneLocalProgress * 0.55;
+      const nextOpacity = sceneLocalProgress > 0.35 ? (sceneLocalProgress - 0.35) / 0.65 : 0;
+
+      // Apply transformations
+      planeCurrent.style.backgroundImage = `url("${currentScene.image}")`;
+      planeCurrent.style.transformOrigin = currentScene.focalPoint;
+      planeCurrent.style.transform = `scale(${currentScale})`;
+      planeCurrent.style.opacity = currentOpacity;
+
+      planeNext.style.backgroundImage = `url("${nextScene.image}")`;
+      planeNext.style.transformOrigin = nextScene.focalPoint;
+      planeNext.style.transform = `scale(${nextScale})`;
+      planeNext.style.opacity = nextOpacity;
+
+      // Update Card Content when scene changes
+      if (currentActiveIdx !== activeIndex) {
+        currentActiveIdx = activeIndex;
+        sceneTag.textContent = currentScene.subtitle;
+        sceneHeadline.textContent = currentScene.title;
+        sceneBody.textContent = currentScene.description;
+        sceneStatusText.textContent = `SCENE 0${activeIndex + 1} / 08 · SCROLL TO GO INSIDE`;
+        sceneActionWrap.style.display = currentScene.hasAction ? 'block' : 'none';
+
+        dotPucks.forEach((dot, idx) => {
+          if (idx === activeIndex) dot.classList.add('active');
+          else dot.classList.remove('active');
+        });
+      }
+
+      // Card micro-parallax
+      const cardY = (0.5 - sceneLocalProgress) * 24;
+      const cardScale = 0.97 + sceneLocalProgress * 0.05;
+      const cardOpacity = sceneLocalProgress < 0.12
+        ? sceneLocalProgress / 0.12
+        : sceneLocalProgress > 0.82
+        ? 1 - (sceneLocalProgress - 0.82) / 0.18
+        : 1;
+
+      storyCard.style.transform = `translateY(${cardY}px) scale(${cardScale})`;
+      storyCard.style.opacity = cardOpacity;
+    }
+
+    window.addEventListener('scroll', updateZoomScrolly, { passive: true });
+    updateZoomScrolly();
+
+    // Golden Sparkles Dust Simulation
+    const canvas = document.getElementById('sparkle-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 65; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.5 + 0.4,
+        alpha: Math.random() * 0.8 + 0.2,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: -Math.random() * 0.6 - 0.2
+      });
+    }
+
+    function renderSparkles() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = '#D4AF37';
+
+      particles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.y < 0) p.y = height;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(renderSparkles);
+    }
+    renderSparkles();
+
+    // Drawer Management
+    const drawer = document.getElementById('smartbook-drawer');
+    const btnOpenPlays = document.getElementById('btn-open-plays');
+    const btnCloseDrawer = document.getElementById('btn-close-drawer');
+    const btnSceneAction = document.getElementById('btn-scene-action');
+    const drawerPlaysGrid = document.getElementById('drawer-plays-grid');
+
+    function populateDrawerPlays() {
+      if (!drawerPlaysGrid || typeof PLAYS_DATA === 'undefined') return;
+      drawerPlaysGrid.innerHTML = '';
+      Object.values(PLAYS_DATA).forEach(play => {
+        const item = document.createElement('div');
+        item.className = 'play-card';
+        item.innerHTML = `
+          <img src="${play.poster}" alt="${play.title}" class="play-poster-thumb" onerror="this.src='public/images/scene-clean/ARE YOU READY.png';" />
+          <div class="play-card-meta">
+            <span class="play-chap">CHAPTER ${play.chapter} · ${play.dormitory}</span>
+            <h4 class="play-dorm-title">${play.title}</h4>
+            <p class="play-quote-snippet">“${play.moral}”</p>
+          </div>
+        `;
+        drawerPlaysGrid.appendChild(item);
+      });
+    }
+    populateDrawerPlays();
+
+    function openDrawer() {
+      drawer.classList.add('open');
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+    }
+
+    if (btnOpenPlays) btnOpenPlays.addEventListener('click', openDrawer);
+    if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', closeDrawer);
+    if (btnSceneAction) btnSceneAction.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDrawer();
+    });
+
+    drawer.addEventListener('click', (e) => {
+      if (e.target === drawer) closeDrawer();
+    });
+  </script>
+</body>
+</html>

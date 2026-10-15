@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="id" class="notranslate" translate="no">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="color-scheme" content="light only" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="google" content="notranslate" />
+
+  <!-- ============================================================
+       ██████╗  █████╗ ████████╗ █████╗     EDIT DI SINI
+       ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+       ██║  ██║███████║   ██║   ███████║
+       ██║  ██║██╔══██║   ██║   ██╔══██║
+       ██████╔╝██║  ██║   ██║   ██║  ██║
+       ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+  ============================================================ -->
+
+  <!-- ▼▼▼ KONFIGURASI UTAMA ▼▼▼ -->
+  <script>
+    const CONFIG = {
+      // --- INFO ACARA ---
+      namaAcara: "DRAMA CONTEST",
+      subJudul: "GUIDEBOOK",
+      tanggal: "03 . 07 . 2026",
+      countdownTarget: "2026-07-03T08:00",   // format: YYYY-MM-DDTHH:MM
+      lokasi: "Balai Pertemuan Pondok Modern Darussalam Gontor",
+      mapsUrl: "https://maps.app.goo.gl/brHqtkV49QAcUozC8",
+      guidebookUrl: "https://drive.google.com/file/d/10PvWUoJ21FXZtGf5R47jW9i_Gv0vphev/view?usp=sharing",
+      musikSrc: "asset/music/por.mp3",
+
+      // --- ASET ---
+      logo: "asset/logo/dc.png",
+      logoFooter1: "asset/logo/DC2.png",
+      // logoFooter2: "asset/logo/psc3.png",
+      bgImage: "asset/images/bg/dc.png",
+      mapImage: "asset/images/galleries/map4.png",
+
+      // --- FRAME SUDUT ---
+      frameTL: "asset/tebing/DC (3).png",
+      frameTR: "asset/tebing/DC (32).png",
+      frameTC: "asset/tebing/por1.png",
+      frameBR: "asset/tebing/DC(12).png",
+      frameBL: "asset/tebing/DC (1).png",
+      frameBC: "asset/tebing/DC(12).png",
+      frameBRWide: "asset/tebing/DC(12).png",
+
+      // --- PENGATURAN UKURAN FRAME ---
+      // Atur lebar (width) dan tinggi (height) untuk masing-masing posisi frame.
+      // Anda bisa menggunakan persen (misal: "100%", "85%"), "auto", atau "100px".
+      // Kosongkan ("") jika tidak ingin mengubah ukuran aslinya (bawaan template).
+      // Catatan: Anda juga bisa menambahkan style lain secara inline jika butuh (misalnya "100%; object-fit: cover;").
+      frameTL_width: "65%",
+      frameTL_height: "",
+
+      frameTR_width: "65%",
+      frameTR_height: "",
+
+      frameBL_width: "45%",
+      frameBL_height: "",
+
+      frameBR_width: "45%",
+      frameBR_height: "",
+
+      // --- TEKS PENUTUP ---
+      pesanPenutup: "Merupakan kebahagiaan dan kehormatan bagi kami, apabila Anda berkenan hadir dan menikmati rangkaian acara DRAMA CONTEST ini bersama kami.",
+      pesanKesimpulan: "Waktu semakin dekat! Jangan lewatkan momen spesial ini. Mari bergabung bersama kami dalam acara DRAMA CONTEST ini.",
+      pesanUnduh: "Terima kasih telah meluangkan waktu membaca guidebook ini. Untuk kenyamanan Anda, silakan unduh guidebook melalui tombol di bawah ini:",
+    };
+  </script>
+  <!-- ▲▲▲ KONFIGURASI UTAMA ▲▲▲ -->
+
+
+  <!-- ▼▼▼ DATA LOMBA DRAMA CONTEST ▼▼▼ -->
+  <script>
+    const LOMBA_DATA = [
+      {
+        kategori: "Sesi 1",
+        warna: "#e8621a",
+        items: [
+          { nama: "Saudi 3 Lantai 3", icon: "", peserta: "في سبيل الوطن", kostum: "Habiburrahman, Wildan G, Irhamna C", format: "Pohon, Rumput, Singgasana | 4 Wireless", poin: "Lampu sorot ke arah narator di tengah dengan kondisi black out, 3 petani sudah berdiri dan mencangkul di atas panggung.", detail: "Diakhiri dengan narator seorang diri dan pasukan swiss yang berada di belakangnya.", gambar: "Drama Contest Peserta/s 3,3.jpg", pdfPage: 13 },
+          { nama: "Syiria Lantai 2", icon: "", peserta: "جزاء الصدق", kostum: "Hilwan, Zein Gholi, Arjuna R", format: "Meja mudabir, Bus, Pohon, Tanaman, Cangkul, dll | 6 Wireless + 2 Dynamic", poin: "Ketika bumper, visual rayon Syiria lantai 2 mulai, karakter utama masuk dan standy di panggung dan Ketika lampu nyala, narator dan actor utama mulai berperan", detail: "Aktor Utama beserta actor lainnya berkumpul di tengah panggung seraya bertanya pada penonton sebuah soal", gambar: "Drama Contest Peserta/SYR 2.jpg", pdfPage: 19 },
+          { nama: "Indonesia 4", icon: "", peserta: "الراعي و الذئب", kostum: "Danandra K, Nizam W, Muhammad Ilyas, dll", format: "Gapura, Tempat jualan sayur dan ikan, Kotak jualan, dll | 4 Wireless + 2 Dynamic", poin: "1. Pemain memasuki panggung dengan properti, banyak orang orang masuk berlalu Lalang di pasar<br>2. Pemain memasuki panggung Ketika narrator Bersama (balai desa)<br>3. Pemain utama masuk setelah penjaga kerajaan masuk (hutan belantaran)", detail: "1. Pemain keluar sembari narator berbicara<br>2. Pemain keluar sebelum narator berbicara<br>3. Pemain berbica sedang semua pemain berkumpul dan keluar meninggalkan ketua kampung berpidato sendirian", gambar: "Drama Contest Peserta/N4.jpg", pdfPage: 27 },
+          { nama: "Syiria Lantai 3", icon: "", peserta: "الشر بالشر", kostum: "Fadzri, Muneeruddin, Abdul, Pak Guru", format: "Papan tulis, Meja, Bangku, Latar, Lonceng, Semak Semak, Pintu, dll | 6 Wireless", poin: "Masuk dengan 3 kawan yang sedang bermain lalu diganggu temannya", detail: "Keluar dengan bernyanyi bersama", gambar: "Drama Contest Peserta/SYR 3.jpg", pdfPage: 39 },
+          { nama: "Saudi 1 Lantai 3", icon: "", peserta: "القاضي و األمير", kostum: "Surya, Ghaza, Faza, Faiq", format: "Kios, Meja, Mimbar, Penjara, Pistol, dan Singgasana raja | 3 Wireless + 5 Dinamic", poin: "Lampu mati lalu lampu sorot menyoroti narator, sisanya property beserta aktor stand by di belakang narator", detail: "Lampu sorot menyoroti narrator yang membaca syiir dan semua keluar", gambar: "Drama Contest Peserta/s 1,3.jpg", pdfPage: 51 }
+        ]
+      },
+      {
+        kategori: "Sesi 2",
+        warna: "#2980b9",
+        items: [
+          { nama: "Sholihin", icon: "", peserta: "Tidak Diketahui", kostum: "Wijdan, Mahib, Aiman, Daffa Abqary, Yusrillah", format: "Pohon, Rumput-rumputan, Cangkul, dan Kursi | Wireless 4 + Dynamic 4", poin: "3 Orang masuk sebagai pemain latar, dilanjut 4 orang penari masuk, serta 4 orang prajurit dan 1 raja masuk", detail: "Semua keluar serentak setelah cerita terakhir", gambar: "Drama Contest Peserta/sol.jpg", pdfPage: 68 },
+          { nama: "Saudi 1 Lantai 2", icon: "", peserta: "آيات الوفاء", kostum: "Ramafa, Fadhla, Arqoneva", format: "Pohon 2, Rumput 2, Semak Berbunga 2/3, Gerbang 1, Rumah 1, dll | Dynamic 2 + Wireless 2", poin: "Visual 1 menit (jika ada) atau langsung prolog 2 orang antara kakek dan cucu setelah blackout bersambung ke drama , intro bersama audio mulai dan properti masuk dari kanan kiri", detail: "Setelah bernyanyi Bersama seluruh actor memindahkan properti keluar kanan kiri, tepat saat menit ke 10 dari lagu", gambar: "Drama Contest Peserta/s 1,2.jpg", pdfPage: 77 },
+          { nama: "Syiria Lantai 4", icon: "", peserta: "ولد نجيب", kostum: "Ahmad Fawwaz, Salman Alfarisi, Al farizi Achmad, dll", format: "Panggung, Pagar, Kursi Raja, Rumput, Pedang, Batu, Tongkat, dll | Wireless 8", poin: "Lampu mati, lampu sorot kea rah narrator, Karakter sampingan (dari sebelah kiri panggung) dan property (dari tangga kanan kiri) sudah di dalam sebelum tirai dibuka, karakter utama masuk setalah narrator", detail: "Lampu biasa, narrator dipanggung Ketika tirai ditutup. Keluar ke arah kanan panggung", gambar: "Drama Contest Peserta/SYR 4.jpg", pdfPage: 93 },
+          { nama: "Saudi 3 Lantai 2", icon: "", peserta: "تحرير اْلندلس", kostum: "Nabil Falah, Rafa Moon, Christoper, Raja", format: "Pedang, Kapal, Pohon kelapa, Dinosaurus, Sofa, Peta-petaan, dll | 5 Wireless", poin: "Seorang anak masuk bersamaan dengan bapak sambil mengobrol dan memulai dengan bercerita antara anak dan bapak", detail: "Bapak keluar dari stage sambil menggendong seorang anak", gambar: "Drama Contest Peserta/s 3,2.jpg", pdfPage: 105 },
+          { nama: "Indonesia 3", icon: "", peserta: "كريستوفر كو لومبوس", kostum: "Nabil Falah, Rafa Moon", format: "Pedang, Kapal, Pohon kelapa, Dinosaurus, Sofa, Peta-petaan, dll | 5 Wireless", poin: "Seorang anak masuk bersamaan dengan bapak sambil mengobrol dan memulai dengan bercerita antara anak dan bapak", detail: "Bapak keluar dari stage sambil menggendong seorang anak", gambar: "Drama Contest Peserta/N3.jpg", pdfPage: 112 }
+        ]
+      },
+      {
+        kategori: "Sesi 3",
+        warna: "#27ae60",
+        items: [
+          { nama: "Yaman", icon: "", peserta: "األمير و السّجناء", kostum: "Ghaza, Yusup", format: "Pintu, meja, kursi futura, taplak meja, penjara, pentungan, dll | 2 Wireless + 6 Dynamic", poin: "Anak laki-laki memasuki rumah dalam keadaan haus Ketika lampu menyala", detail: "Anak laki-laki beserta aktor aktor lain bernyanyi syiir abu nawas Bersama beserta ada 3 banner masuk lalu keluar semua", gambar: "Drama Contest Peserta/ymn.jpg", pdfPage: 118 },
+          { nama: "Indonesia 2", icon: "", peserta: "الخادم والسّمكة", kostum: "Fazil, Wildan", format: "Meja KMI 2, Sekat, Kursi lab, Tempat pos jaga, Tempat jualan,dll | 1 Wireless + 3 Dinamic", poin: "Aktor-aktor masuk dari kanan & kiri", detail: "Aktor-aktor keluar ke kanan & kiri", gambar: "Drama Contest Peserta/N2.jpg", pdfPage: 125 },
+          { nama: "Aligarh Lantai 2", icon: "", peserta: "مزية التّصوير", kostum: "Raja, Sultan, Ridho, Iman, Galang, Alif", format: "Gapura, Gerobak Fast Cafe, Jemuran Waqf, Meja Makan Satelit, dll | 3 Dynamic + 3 Wireless", poin: "Masuk dari gerbang sebelah ADM dalam keadaan semua property sudah di dalam panggung", detail: "Semua berkumpul di tengah dan pak polisi memberi kesimpulan", gambar: "Drama Contest Peserta/GBS.jpg", pdfPage: 134 },
+          { nama: "Palestina", icon: "", peserta: "جزاء الخيانة", kostum: "Husain Ali, Al Fathan, Ghani Sakha", format: "Pintu, Ikan ikanan, Tombak, Pedang, Pancingan, Wadah, Sofa, dll | 4 Mic", poin: "Semua pemain karakter utama dan sampingan masuk ke panggung, menyampaikan pembukaan, yang dipimpin narrator", detail: "Narator menyampaikan nilai nilai atau kesimpulan dari drama, bersamaan dengan berkumpulnya semua anggota pengikut drama dari karakter utama sampai property untuk mengucapkan salam perpisahan", gambar: "Drama Contest Peserta/pln.jpg", pdfPage: 144 },
+          { nama: "Syanggit", icon: "", peserta: "ذكاء القاضي", kostum: "Rakha haibah, Akhmad Sajidin, Adib Fayyadh, Jawahir Habibi", format: "Toko, Kaktus, Meja pengadilan, Gapura, Modium Hakim, Pagar, dll | 3 Wireless + 1 Dinamic", poin: "Para pemain masuk, Narator ngomong (lampu sorot) pemain ngobrol lalu lagu mulai, pedagang masuk dan dikawal dengan terompet serta penyanyi lalu pedagang masuk", detail: "Ketika narator berbicara pada scene terakhir sebelum itu ada freeze sebentar, lalu para pemain keluar panggung tersisa narator dan juga pedagang atau pemeran utama lalu mereka keluar, semua pemain keluar lewat samping dan depan", gambar: "Drama Contest Peserta/syg.jpg", pdfPage: 151 }
+        ]
+      }
+    ];
+  </script>
+  <!-- ▼▼▼ DATA SUSUNAN ACARA PEMBUKAAN ▼▼▼ -->
+  <script>
+    const ACARA_PEMBUKAAN = [
+      { no: "01", teks: "Pembacaan Ayat Suci Al-Qur'an" },
+      { no: "02", teks: "Sambutan Ketua Panitia Drama Contest" },
+      { no: "03", teks: "Sambutan Bapak Pimpinan" },
+      { no: "04", teks: "Pembukaan MC" },
+      { no: "05", teks: "Pembacaan Kriteria Penilaian" },
+      { no: "06", teks: "Penampilan-Penampilan" },
+      { no: "07", teks: "Hiburan" },
+      { no: "08", teks: "Pengumpulan Hasil Acara" },
+      { no: "09", teks: "Pembagian Hadiah" },
+      { no: "10", teks: "Penutup" },
+    ];
+  </script>
+
+
+  <title>DRAMA CONTEST</title>
+  <meta name="title" content="DRAMA CONTEST" />
+  <meta name="description"
+    content="Drama Contest Guidebook. Find complete event information, rundowns, and attendance guidelines here." />
+  <link rel="icon" type="image/x-icon" href="asset/logo/dc.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://think-ness.github.io/guidebook/" />
+  <meta property="og:title" content="DRAMA CONTEST" />
+  <meta property="og:description"
+    content="Drama Contest Guidebook. Find complete event information, rundowns, and attendance guidelines here." />
+  <meta property="og:image" content="https://drive.google.com/uc?export=view&id=18VDzG9pUONKTf5-vFUvQaFEh9SFBh-vY" />
+
+  <!-- ============================================================
+       DEPENDENCIES (jangan diubah kecuali update versi)
+  ============================================================ -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com/" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="https://itsugadesign.com/plugins/animate.css@4.1.1/animate.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css" />
+  <link rel="stylesheet" href="https://assets.satumomen.com/build/assets/bootstrap-vCaDZZbr.css" />
+  <link rel="stylesheet" href="https://assets.satumomen.com/build/assets/themesv2-DZZF_N8v.css" />
+
+  <!-- ============================================================
+       CSS — TEMA & VARIABEL
+  ============================================================ -->
+  <style>
+    /* ── Font kustom ── */
+    @font-face {
+      font-family: 'Pixelta';
+      src: url('src/font/Pixelta.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @import url("https://fonts.googleapis.com/css2?family=Pixelta:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap");
+
+    /* ── Variabel Warna & Font — ubah di sini untuk ganti tema ── */
+    :root {
+      --inv-bg: #e8e3e3;
+      --inv-base: #1B1B1B;
+      --inv-accent: #65287A;
+      --inv-border: #1B1B1B;
+      --font-base: "Poppins", sans-serif;
+      --font-accent: "Pixelta", sans-serif;
+      --font-latin: "Pixelta", sans-serif;
+      --menu-bg: #65287A;
+      --menu-inactive: #DED4E0;
+      --menu-active: #8C3B82;
+      --btn-color: #ffffff;
+    }
+
+    /* ── Body ── */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #65287A;
+      color: #333;
+      padding: 20px;
+    }
+
+    /* ── Modal Lirik ── */
+    .modal-lirik {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content-lirik {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 20px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .close-lirik {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .isi-lirik {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .isi-lirik h3 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .isi-lirik p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+  </style>
+
+  <!-- ── Font tambahan SatuMomen ── -->
+  <style>
+    @import url("https://itsugadesign.com/fonts/brittany_signature/BrittanySignature.css");
+    @import url("https://itsugadesign.com/fonts/photograph_signature/fonts.css");
+    @import url("https://itsugadesign.com/fonts/heatwood/Heatwood.css");
+
+    .font-brittany-signature {
+      font-family: "Brittany Signature";
+      line-height: 1.6 !important;
+    }
+
+    .font-photograph-signature {
+      font-family: "Photograph Signature";
+      line-height: 1.6 !important;
+    }
+
+    .font-heatwood {
+      font-family: "Heatwood";
+      line-height: 3 !important;
+    }
+  </style>
+  <script src="asset/naskah.js"></script>
+</head>
+
+<body>
+  <main id="app">
+    <div id="modalOverlay" class="modal-backdrop fade" style="display: none"></div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
+    <!-- Audio -->
+    <audio id="music" loop autoplay>
+      <source id="musikSrc" src="" />
+    </audio>
+
+    <div id="workspace-container" class="position-fixed h-100 w-100" style="overflow: hidden">
+      <div id="panZoom" class="position-fixed h-100 w-100"
+        style="top:0;right:0;bottom:0;left:0;transform-origin:50% 50%;">
+        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+          <div class="canvas not-open">
+            <div id="satuMomen" data-guest="Nama Tamu" data-group="VIP">
+              <div class="satumomen_track">
+                <ul class="satumomen_list" id="slideList">
+
+                  <!-- ============================================================
+                     SLIDE 1 — COVER
+                ============================================================ -->
+                  <li class="satumomen_slide satumomen_cover">
+                    <div class="container-mobile cover" id="bgCover">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_1"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_1"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_1"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_1"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                        <div style="width:100%">
+                          <div
+                            class="text-center font-latin color-accent animate__animated animate__fadeInDown animate__slower">
+                            <div class="editable mt-4 mb-4" id="coverTanggal"
+                              style="font-size:14.4px;font-family:'Pixelta',sans-serif;"></div>
+                            <div class="animate__animated animate__fadeInDown animate__slower image-editable"
+                              style="width:76%;margin:auto;overflow:hidden;">
+                              <img id="coverLogo" src="" style="width:80%;height:100%;object-fit:cover;" alt="logo" />
+                            </div>
+                            <div class="editable mt-1 font-latin color-accent" id="coverSubjudul"
+                              style="font-size:40px;font-family:'Pixelta',sans-serif;"></div>
+                          </div>
+                          <div class="text-center">
+                            <button
+                              class="font-latin color-accent btn-open-invitation btn btn-primary rounded-pill mb-4 animate__animated animate__fadeInUp animate__slow"
+                              style="font-size:14.4px;font-family:'Pixelta',sans-serif;">
+                              Mulai
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 2 — (Dekorasi / Intro visual)
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide2">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_2"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_2"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_2"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_2"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                        <div style="width:100%">
+
+                          <div class="text-center animate__animated animate__fadeInUp animate__slower"
+                            style="padding:0 20px;">
+                            <div class="image-editable"
+                              style="height:100%;width:100%;margin:auto;display:flex;justify-content:center;align-items:center;overflow:hidden;transform:translate(0px,-14px);">
+                              <img id="" src="asset/logo/dc.png" style="width:30%;height:30%;border-radius:20px;"
+                                alt="logo" />
+                            </div>
+                            <div
+                              style="font-family:'Pixelta',sans-serif;font-size:22px;color:var(--inv-accent);font-weight:700;margin-bottom:8px;letter-spacing:1px;">
+                              APA ITU DRAMA CONTEST?</div>
+                            <div
+                              style="width:40px;height:3px;background:var(--inv-accent);margin:0 auto 16px;border-radius:2px;">
+                            </div>
+                            <div
+                              style="font-family:'Poppins',sans-serif;font-size:12px;color:var(--inv-base);line-height:1.8;text-align:left;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border-radius:16px;padding:16px;border:1px solid rgba(255,255,255,0.3);margin-bottom:14px;">
+                              <p style="margin:0 0 10px 0;"><strong>Arabic Drama Contest</strong> adalah perlombaan
+                                sandiwara
+                                berbahasa Arab antar rayon yang diselenggarakan di Pondok Modern Darussalam Gontor,
+                                dikoordinasi oleh
+                                kelas 4 dan 5 KMI.</p>
+                              <p style="margin:0 0 10px 0;">Acara ini diselenggarakan pada <strong>Jum'at, 3 Juli
+                                  2026</strong> dan dihadiri oleh semua santri dan Asatidz se-Darussalam.</p>
+                              <p style="margin:0;font-style:italic;color:var(--inv-accent);">"Tingkatkan Bahasa Arab
+                                melalui Drama dan Kreativitas"</p>
+                            </div>
+                            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+                              <div
+                                style="background:rgba(227,98,26,0.15);border:1px solid var(--inv-accent);border-radius:20px;padding:6px 14px;font-family:'Pixelta',sans-serif;font-size:11px;color:var(--inv-accent);">
+                                Akting</div>
+                              <div
+                                style="background:rgba(227,98,26,0.15);border:1px solid var(--inv-accent);border-radius:20px;padding:6px 14px;font-family:'Pixelta',sans-serif;font-size:11px;color:var(--inv-accent);">
+                                ️ B. Arab</div>
+                              <div
+                                style="background:rgba(227,98,26,0.15);border:1px solid var(--inv-accent);border-radius:20px;padding:6px 14px;font-family:'Pixelta',sans-serif;font-size:11px;color:var(--inv-accent);">
+                                Kreativitas</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 3 — LOGO + SUB-ACARA
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide3">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_3"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_3"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_3"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_3"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                        <div>
+                          <div class="animate__animated animate__fadeInUp animate__slower"
+                            style="background-size:contain;background-repeat:no-repeat;background-position:center;width:300px;">
+                            <div class="image-editable"
+                              style="height:100%;width:100%;margin:auto;display:flex;justify-content:center;align-items:center;overflow:hidden;transform:translate(0px,-14px);">
+                              <img id="slide3Logo" src="" style="width:60%;height:60%;border-radius:20px;" alt="logo" />
+                            </div>
+                            <div class="text-center animate__animated animate__fadeInUp animate__slower">
+                              <div class="editable mt-1 font-latin color-accent" id="slide3SubAcara"
+                                style="font-size:40px;font-family:'Pixelta',sans-serif;"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 4 — SUSUNAN ACARA PEMBUKAAN
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide4">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_4"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_4"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_4"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_4"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                        <div style="width:100%">
+                          <div class="image-editable"
+                            style="height:100%;width:100%;margin:auto;display:flex;justify-content:center;align-items:center;overflow:hidden;transform:translate(0px,-14px);">
+                            <img id="" src="asset/logo/dc.png" style="width:30%;height:30%;border-radius:20px;"
+                              alt="logo" />
+                          </div>
+                          <div
+                            style="max-height:420px;overflow-y:auto;padding:12px;border-radius:16px;backdrop-filter:blur(8px);background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:cross-slide-x;"
+                            onwheel="event.stopPropagation();" ontouchmove="event.stopPropagation();">
+
+                            <div class="text-center mb-3" style="color:var(--inv-accent);">
+
+                              <div
+                                style="font-family:'Pixelta',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;">
+                                DAFTAR ACARA</div>
+                              <div
+                                style="width:40px;height:2px;background:var(--inv-accent);margin:6px auto 0;border-radius:2px;">
+                              </div>
+                            </div>
+                            <div id="acaraList"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 5 — LOMBA-LOMBA (scroll list, no JS tab)
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide5">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_5"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_5"
+                          src="" style="width:35%" alt="frame">
+                        <!-- <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower"
+                          src="asset/tebing/por5.png" alt="frame"> -->
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                      <div
+                        style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;padding:65px 12px 80px;">
+                        <!-- Judul -->
+                        <div class="text-center mb-1 animate__animated animate__fadeInDown animate__slower"
+                          style="flex-shrink:0;">
+                          <div
+                            style="font-family:'Pixelta',sans-serif;font-size:20px;color:var(--inv-accent);font-weight:700;letter-spacing:1px;">
+                            DAFTAR PENAMPILAN</div>
+                          <div
+                            style="width:40px;height:2px;background:var(--inv-accent);margin:4px auto 8px;border-radius:2px;">
+                          </div>
+                          <p
+                            style="font-size:10px;color:var(--inv-accent);font-family:'Poppins',sans-serif;margin:0 0 8px;opacity:0.85;">
+                            Scroll untuk lihat semua penampilan ↓</p>
+                        </div>
+                        <!-- Scroll area — semua kategori di sini -->
+                        <div id="lombaScrollArea"
+                          style="flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;"
+                          onwheel="event.stopPropagation();" ontouchmove="event.stopPropagation();">
+                          <!-- Diisi JS dari LOMBA_DATA -->
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 6 — MAPS / LOKASI
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide6">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_6"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_6"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_6"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_6"
+                          src="" alt="frame">
+
+                        <!-- <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div> -->
+                      </div>
+                    </div>
+                    <div class="frame frame-2">
+                      <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                        <div style="width:100%">
+                          <div
+                            class="editable text-center color-accent mb-3 animate__animated animate__fadeInDown animate__slow font-italic"
+                            style="font-size:42px">Maps</div>
+                          <div class="p-1 mb-3 animate__animated animate__flipInX animate__slower"
+                            style="border-radius:2.5rem;overflow:hidden;position:relative;border:4px solid var(--inv-base);">
+                            <div class="image-editable animate__animated animate__fadeInDown animate__slow"
+                              style="width:100%;margin:auto;border-radius:2rem;overflow:hidden;padding-bottom:70%;position:relative;border:2px solid var(--inv-base);">
+                              <img id="mapImg" src="" class="w-100 h-100" style="position:absolute;object-fit:cover;"
+                                alt="peta lokasi" />
+                            </div>
+                          </div>
+                          <div class="text-center animate__animated animate__fadeInUp animate__slow">
+                            <div class="editable color-accent font-weight-bold" id="lokasiTeks"
+                              style="font-size:14.4px"></div>
+                            <a id="mapLink" href="#" target="_blank" rel="nofollow noreferrer noopener"
+                              class="link btn btn-primary mb-4 animate__animated animate__fadeInUp animate__slow"
+                              style="border-radius:0.3rem">
+                              Petunjuk Ke Lokasi
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 7 — COUNTDOWN
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide7">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_7"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_7"
+                          src="" style="width:35%" alt="frame">
+
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_7"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_7"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                    </div>
+                    <div class="frame frame-2">
+                      <div class="d-flex flex-column justify-content-center align-items-center" style="height:100%">
+                        <div class="animate__animated animate__zoomIn animate__slower mb-4">
+                          <div class="image-editable animate__animated animate__fadeInUp animate__slower"
+                            style="height:100%;margin-top:0;width:30%;margin:auto;overflow:hidden;margin-bottom:20px;">
+                            <img id="countdown_logo" src="" style="width:100%;object-fit:cover;" alt="logo" />
+                          </div>
+                        </div>
+                        <div style="width:100%">
+                          <div
+                            class="text-center color-accent h4 mb-4 editable animate__animated animate__fadeInDown animate__slow font-accent"
+                            style="font-size:21.6px;font-family:'Pixelta',sans-serif;">
+                            Sisa Momen
+                          </div>
+                          <div
+                            class="countdown-wrapper mx-auto mb-5 d-flex flex-column animate__animated animate__fadeInUp animate__slower"
+                            id="countdownWrapper" data-datetime="2026-07-03T14:00:00"
+                            style="max-width:280px;min-width:280px;">
+                            <div class="countdown text-center">
+                              <div class="countdown-item day bg-white"
+                                style="color:var(--menu-inactive);border:1px solid var(--menu-inactive);">
+                                <div class="number">00</div>
+                                <div class="text editable">Hari</div>
+                              </div>
+                              <div class="countdown-item hour bg-white"
+                                style="color:var(--menu-inactive);border:1px solid var(--menu-inactive);">
+                                <div class="number">00</div>
+                                <div class="text editable">Jam</div>
+                              </div>
+                              <div class="countdown-item minute bg-white"
+                                style="color:var(--menu-inactive);border:1px solid var(--menu-inactive);">
+                                <div class="number">00</div>
+                                <div class="text editable">Menit</div>
+                              </div>
+                              <div class="countdown-item second bg-white"
+                                style="color:var(--menu-inactive);border:1px solid var(--menu-inactive);">
+                                <div class="number">00</div>
+                                <div class="text editable">Detik</div>
+                              </div>
+                            </div>
+                            <button class="btn-countdown btn btn-sm btn-pilled btn-accent mt-2">Atur Countdown</button>
+                          </div>
+                          <div style="display:flex;justify-content:center;">
+                            <div style="width:90%;" class="text-center">
+                              <div
+                                class="font-lantin color-accent editable mb-4 animate__animated animate__fadeInUp animate__slower"
+                                id="pesanCountdown" style="font-size:12px;font-family:'Pixelta',sans-serif;"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 8 — UNDUH GUIDEBOOK
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide8">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_8"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_8"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_8"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_8"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                    </div>
+                    <div class="frame frame-2">
+                      <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                        <div style="width:90%" class="text-center">
+                          <div
+                            class="font-latin color-accent h4 mb-2 editable animate__animated animate__fadeInDown animate__slower"
+                            style="font-size:28.8px;font-family:'Pixelta',sans-serif;">Tanda Kasih</div>
+                          <div
+                            class="font-latin color-accent editable mb-4 animate__animated animate__fadeInUp animate__slower"
+                            id="pesanUnduh" style="font-size:14.4px;font-family:'Pixelta',sans-serif;"></div>
+                          <div style="display:flex;gap:3px;margin-bottom:5px;">
+                            <a id="unduhLink" href="#"
+                              class="btn btn-block btn-primary rounded-pill animate__animated animate__fadeInUp animate__slow"
+                              style="max-width:150px;margin:auto;font-size:12px;">
+                              Buka Guidebook
+                            </a>
+                          </div>
+                          <div class="gift-container mt-3 p-4 rounded animate__animated animate__zoomIn animate__slow">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- ============================================================
+                     SLIDE 9 — PENUTUP / THANKS
+                ============================================================ -->
+                  <li class="satumomen_slide">
+                    <div class="container-mobile" id="bgSlide9">
+                      <div class="frame">
+                        <img class="frame-tl animate__animated animate__fadeInDown animate__slower" id="frameTL_9"
+                          src="" style="width:85%" alt="frame">
+                        <img class="frame-tr animate__animated animate__fadeInDown animate__slower" id="frameTR_9"
+                          src="" style="width:35%" alt="frame">
+                        <img class="frame-bl w-100 animate__animated animate__fadeInUp animate__slower" id="frameBL_9"
+                          src="" alt="frame">
+                        <img class="frame-br w-100 animate__animated animate__fadeInUp animate__slower" id="frameBR_9"
+                          src="" alt="frame">
+                        <div class="only-cover frame-bl animate__animated animate__fadeInBottomLeft animate__slow"
+                          style="animation-delay:2.5s;"></div>
+                      </div>
+                    </div>
+                    <div class="frame frame-2">
+                      <div class="watermark d-flex flex-column align-items-center justify-content-center"
+                        style="height:100%">
+                        <div style="width:100%">
+                          <div class="animate__animated animate__zoomIn animate__slower mb-4">
+                            <div class="image-editable animate__animated animate__fadeInUp animate__slower"
+                              style="height:100%;margin-top:0;width:30%;margin:auto;overflow:hidden;margin-bottom:20px;">
+                              <img id="penutupLogo" src="" style="width:100%;object-fit:cover;" alt="logo" />
+                            </div>
+                          </div>
+                          <div class="text-center">
+                            <div
+                              class="font-latin color-accent text-center editable mb-3 animate__animated animate__fadeInDown animate__slower"
+                              id="pesanPenutup"
+                              style="font-size:14px;font-family:'Pixelta',sans-serif;width:90%;margin:0 auto;text-align:center;">
+                            </div>
+                            <div
+                              class="font-latin color-accent editable font-italic animate__animated animate__fadeInDown animate__slow mb-4"
+                              style="font-size:14px;font-family:'Pixelta',sans-serif;">
+                              Hormat Kami panitia
+                            </div>
+                          </div>
+                          <div class="text-center animate__animated animate__fadeInUp animate__slower">
+                            <div class="image-editable"
+                              style="height:100%;width:100%;margin:auto;overflow:hidden;transform:translate(0px,-14px);">
+                              <img id="logoFooter1" src="" style="width:60%;height:100%;" alt="logo" />
+                              <!-- <img id="logoFooter2" src="" style="width:60%;height:100%;" alt="logo" /> -->
+                            </div>
+                          </div>
+                          <div class="watermark-placeholder text-center pb-5"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul><!-- /satumomen_list -->
+              </div>
+            </div><!-- /canvas -->
+
+
+            <!-- ============================================================
+               MENU NAVIGASI BAWAH
+               Urutan harus sesuai dengan urutan slide di atas
+          ============================================================ -->
+            <div id="smMenu" class="satumomen_menu">
+              <ul class="satumomen_menu_list">
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M4 20h16v2H4zm16-10h2v10h-2zM2 10h2v10H2zm2-2h2v2H4zm2-2h2v2H6zm2-2h2v2H8zm2-2h4v2h-4zm4 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zM8 14h2v6H8zm2-2h4v2h-4zm4 2h2v6h-2z" />
+                  </svg>
+                  <span>Beranda</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path d="M20 17V7h2v10zm-2-2V9h2v6zM2 7h2v10H2zm14 0h2v10h-2zM4 5h12v2H4zm0 12h12v2H4z" />
+                  </svg>
+                  <span>DRAMA CONTEST</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M4 2h16v2H4zm0 18h16v2H4zM2 4h2v16H2zm18 0h2v16h-2zm-4 8h2v2h-2zm-2 2h2v2h-2zm4 0h2v2h-2zm-8 0h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2z" />
+                    <path d="M20 16h2v2h-2zM8 16h2v2H8zm-2 2h2v2H6zM8 6h2v2H8zM6 8h2v2H6zm2 2h2v2H8zm2-2h2v2h-2z" />
+                  </svg>
+                  <span>Galeri</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z" />
+                  </svg>
+                  <span>Pembukaan</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M2 1h5v2H2zm0 12h5v2H2zm0-4h5v2H2zm0 12h5v2H2zM7 3h2v6H7zm7 4h2v10h-2zm-7 8h2v6H7zm2 2h5v2H9zM9 5h5v2H9zm7 6h6v2h-6z" />
+                  </svg>
+                  <span>Peserta</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M7 2h10v2H7zM5 4h2v2H5zm14 0h-2v2h2zM7 17h2v2H7zm2 2h2v2H9zm6-2h2v2h-2zm-2 2h2v2h-2zm-2 2h2v2h-2zm-6-7h2v3H5zm12 0h2v3h-2zM3 6h2v8H3zm18 0h-2v8h2zM10 6h4v2h-4zM8 8h2v4H8zm2 4h4v2h-4zm4-4h2v4h-2z" />
+                  </svg>
+                  <span>Lokasi</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      d="M6 2h12v2H6zM2 6h2v12H2zm18 0h2v12h-2zm-2-2h2v2h-2zM4 4h2v2H4zm2 18h12v-2H6zm12-2h2v-2h-2zM4 20h2v-2H4zm7-14h2v7h-2zm2 7h2v2h-2zm2 2h2v2h-2z" />
+                  </svg>
+                  <span>Sisa Waktu</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path d="M21 15v4h-2v-4zm-2 4v2H5v-2zM5 15v4H3v-4zm8-12v14h-2V3z" />
+                    <path d="M7 11v2h10v-2zm2 2v2h2v-2zm4 0v2h2v-2z" />
+                    <path d="M15 11v2h2v-2z" />
+                  </svg>
+                  <span>Unduh</span>
+                </li>
+                <li class="satumomen_menu_item">
+                  <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity=".4"
+                      d="M16.34 2H7.67C4.28 2 2 4.38 2 7.92v8.17C2 19.62 4.28 22 7.67 22h8.67c3.39 0 5.66-2.38 5.66-5.91V7.92C22 4.38 19.73 2 16.34 2Z"
+                      fill="currentColor" />
+                    <path
+                      d="M10.813 15.248a.872.872 0 0 1-.619-.256l-2.373-2.373a.874.874 0 1 1 1.237-1.238l1.755 1.755 4.128-4.128a.874.874 0 1 1 1.237 1.238l-4.746 4.746a.872.872 0 0 1-.619.256Z"
+                      fill="currentColor" />
+                  </svg>
+                  <span>Thanks</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Tombol musik & autoplay -->
+            <div class="floating-action d-flex align-items-end flex-column">
+              <button id="btnMusic" onclick="playMusic()" class="btn btn-float">
+                <svg class="play" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                  viewBox="0 0 256 256">
+                  <path
+                    d="M184,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,224,80ZM53.92,34.62A8,8,0,1,0,42.08,45.38L73.55,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V175.09l42.08,46.29a8,8,0,1,0,11.84-10.76Zm92.16,77.59A8,8,0,0,0,160,106.83V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0-1,11.7Z" />
+                </svg>
+                <svg class="pause" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                  viewBox="0 0 256 256">
+                  <path
+                    d="M160,32V224a8,8,0,0,1-12.91,6.31L77.25,176H32a16,16,0,0,1-16-16V96A16,16,0,0,1,32,80H77.25l69.84-54.31A8,8,0,0,1,160,32Zm32,64a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V104A8,8,0,0,0,192,96Zm32-16a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,224,80Z" />
+                </svg>
+              </button>
+              <button id="btnAutoplay" class="btn btn-float">
+                <svg class="play" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                  viewBox="0 0 256 256">
+                  <path
+                    d="M128,24A104,104,0,1,0,232,128,104.13,104.13,0,0,0,128,24Zm36.44,110.66-48,32A8.05,8.05,0,0,1,112,168a8,8,0,0,1-8-8V96a8,8,0,0,1,12.44-6.66l48,32a8,8,0,0,1,0,13.32Z" />
+                </svg>
+                <svg class="pause" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                  viewBox="0 0 256 256">
+                  <path
+                    d="M128,24A104,104,0,1,0,232,128,104.13,104.13,0,0,0,128,24ZM112,160a8,8,0,0,1-16,0V96a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V96a8,8,0,0,1,16,0Z" />
+                </svg>
+              </button>
+            </div>
+
+          </div><!-- /canvas not-open -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightboxWrapper" class="lightbox-wrapper">
+      <div class="lightbox-list"></div>
+      <a href="#" id="lightboxCloseBtn" class="btn-lightbox">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 0 1-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 0 1-1.414-1.414L8.586 10 4.293 5.707a1 1 0 0 1 0-1.414z"
+            clip-rule="evenodd" />
+        </svg>
+      </a>
+      <div class="lightbox-navigation">
+        <a href="#" id="lightboxPrevBtn" class="lightbox-arrow" data-index="0">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+          </svg>
+        </a>
+        <a href="#" id="lightboxNextBtn" class="lightbox-arrow" data-index="0">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Modal Detail Lomba -->
+    <div id="modalLomba"
+      style="display:none;position:fixed;z-index:1001;left:0;top:0;width:100%;height:100%;align-items:center;justify-content:center;backdrop-filter:blur(5px);touch-action:cross-slide-x;"
+      onwheel="event.stopPropagation();" ontouchmove="event.stopPropagation();">
+      <div
+        style="background:#C6C6C6;border:4px solid #1A1A1A;border-radius:0;width:88%;max-width:400px;padding:20px;position:relative;max-height:75vh;overflow-y:auto;box-shadow:8px 8px 0px rgba(0,0,0,0.5);">
+        <span id="closeLomba"
+          style="position:absolute;top:10px;right:14px;font-family:'Pixelta',sans-serif;font-size:20px;font-weight:bold;cursor:pointer;color:#333;background:#999;border:2px solid #1A1A1A;border-top-color:#DDD;border-left-color:#DDD;width:28px;height:28px;display:flex;align-items:center;justify-content:center;line-height:1;" onmousedown="this.style.borderTopColor='#333';this.style.borderLeftColor='#333';this.style.borderBottomColor='#DDD';this.style.borderRightColor='#DDD';this.style.background='#777';" onmouseup="this.style.borderTopColor='#DDD';this.style.borderLeftColor='#DDD';this.style.borderBottomColor='#1A1A1A';this.style.borderRightColor='#1A1A1A';this.style.background='#999';">X</span>
+        <div id="lombaModalContent"></div>
+      </div>
+    </div>
+
+    <!-- Modal Peserta (legacy, kept for compatibility) -->
+    <div id="modalLirik" class="modal-lirik"
+      style="display:none;overflow-y:auto;border-radius:12px;backdrop-filter:blur(5px);touch-action:cross-slide-x;"
+      onwheel="event.stopPropagation();" ontouchmove="event.stopPropagation();">
+      <div class="modal-content-lirik">
+        <span class="close-lirik">&times;</span>
+        <div class="isi-lirik" style="max-height:60vh;overflow-y:auto;padding:10px;"></div>
+      </div>
+    </div>
+
+    <!-- Modal Browser tidak didukung -->
+    <div class="modal fade" id="notSupport" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:0.8rem">
+          <div class="modal-body text-center justify-content-center align-items-center">
+            <h2>Pemberitahuan</h2>
+            <p>Browser yang kamu gunakan mungkin kurang kompatibel. Beberapa fungsi undangan ini mungkin tidak dapat
+              berjalan dengan baik. Kami merekomendasikan Chrome.</p>
+            <div class="d-flex justify-content-center">
+              <a href="https://apps.apple.com/id/app/google-chrome/id535886823" class="btn p-1" target="_BLANK">
+                <img src="https://itsugadesign.com/images/btn_app_store.png" alt="AppStore" height="40px" />
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=com.android.chrome&hl=in&gl=US" class="btn p-1"
+                target="_BLANK">
+                <img src="https://itsugadesign.com/images/btn_play_store.png" alt="PlayStore" height="40px" />
+              </a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary btn-block rounded-pill" onclick="closeModal(notSupport)">Tetap
+              Akses</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="waterMark" class="mt-5" style="display:none">
+      <div
+        class="wm-music font-latin color-accent mt-3 text-center animate__animated animate__fadeInUp animate__slower animate__delay-1s"
+        style="font-size:60%;font-family:'Pixelta',sans-serif;">
+        <div style="opacity:0.5"><strong>Music:</strong></div>
+        <div style="opacity:0.5" id="musikLabel">Ost DRAMA CONTEST</div>
+      </div>
+    </div>
+
+  </main><!-- /app -->
+
+  <!-- ============================================================
+     SCRIPTS DEPENDENCIES
+============================================================ -->
+  <script src="https://itsugadesign.com/themes/theme-app.js?v=20246"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://itsugadesign.com/themes/themesv2.js?v=20246"></script>
+
+  <!-- ============================================================
+     INIT — Terapkan CONFIG & DATA ke elemen HTML
+============================================================ -->
+  <script>
+    // ── Terapkan CONFIG ke DOM ──────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // Audio
+      document.getElementById('musikSrc').src = CONFIG.musikSrc;
+
+      // Background semua slide
+      document.querySelectorAll('.container-mobile').forEach(el => {
+        el.style.backgroundImage = `url(${CONFIG.bgImage})`;
+      });
+
+      // Frame sudut — terapkan ke semua slide
+      const TOTAL_SLIDES = 9;
+      for (let i = 1; i <= TOTAL_SLIDES; i++) {
+        const tl = document.getElementById(`frameTL_${i}`);
+        const tr = document.getElementById(`frameTR_${i}`);
+        const br = document.getElementById(`frameBR_${i}`);
+        const bl = document.getElementById(`frameBL_${i}`);
+        if (tl) {
+          tl.src = CONFIG.frameTL;
+          if (CONFIG.frameTL_width) tl.style.setProperty("width", CONFIG.frameTL_width, "important");
+          if (CONFIG.frameTL_height) tl.style.setProperty("height", CONFIG.frameTL_height, "important");
+        }
+        if (tr) {
+          tr.src = CONFIG.frameTR;
+          if (CONFIG.frameTR_width) tr.style.setProperty("width", CONFIG.frameTR_width, "important");
+          if (CONFIG.frameTR_height) tr.style.setProperty("height", CONFIG.frameTR_height, "important");
+        }
+        if (br) {
+          br.src = (i >= 6) ? CONFIG.frameBRWide : CONFIG.frameBR;
+          if (CONFIG.frameBR_width) br.style.setProperty("width", CONFIG.frameBR_width, "important");
+          if (CONFIG.frameBR_height) br.style.setProperty("height", CONFIG.frameBR_height, "important");
+        }
+        if (bl) {
+          bl.src = CONFIG.frameBL;
+          if (CONFIG.frameBL_width) bl.style.setProperty("width", CONFIG.frameBL_width, "important");
+          if (CONFIG.frameBL_height) bl.style.setProperty("height", CONFIG.frameBL_height, "important");
+        }
+      }
+
+      // Slide 1 — Cover
+      document.getElementById('coverTanggal').textContent = CONFIG.tanggal;
+      document.getElementById('coverLogo').src = CONFIG.logo;
+      document.getElementById('coverSubjudul').textContent = CONFIG.subJudul;
+
+      // Slide 3 — Logo + sub acara
+      document.getElementById('slide3Logo').src = CONFIG.logo;
+      document.getElementById('slide3SubAcara').innerHTML = 'DRAMA CONTEST<br><span style="font-size:16px;font-family:\'Poppins\',sans-serif;font-weight:300;">1447 / 2026</span>';
+
+      // Slide 4 — Acara Pembukaan
+      const acaraList = document.getElementById('acaraList');
+      if (acaraList) {
+        ACARA_PEMBUKAAN.forEach(item => {
+          acaraList.innerHTML += `
+          <div style="
+            position:relative;
+            padding:10px;
+            margin-bottom:6px;
+            background:#8B8B8B;
+            border:3px solid #1A1A1A;
+            border-top-color:#C6C6C6;
+            border-left-color:#C6C6C6;
+            image-rendering:pixelated;
+            display:flex;
+            align-items:flex-start;
+            gap:10px;
+          ">
+            <div style="
+              min-width:28px;
+              height:28px;
+              background:#555;
+              border:2px solid #373737;
+              border-top-color:#373737;
+              border-left-color:#373737;
+              border-bottom-color:#FFF;
+              border-right-color:#FFF;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-family:'Pixelta',sans-serif;
+              font-size:12px;
+              color:#fff;
+              font-weight:700;
+              text-shadow:1px 1px 0px #000;
+            ">${item.no}</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:11.5px;color:#fff;line-height:1.5;padding-top:2px;text-shadow:1px 1px 0px #000;">${item.teks}</div>
+          </div>`;
+        });
+      }
+
+      // ── Slide 5 — Lomba Scroll List ──
+      (function () {
+        var area = document.getElementById('lombaScrollArea');
+        var modalLomba = document.getElementById('modalLomba');
+
+        function buildScrollList() {
+          var html = '';
+          LOMBA_DATA.forEach(function (cat, idx) {
+
+            // ── Header kategori (Minecraft sign style) ──
+            html += '<div style="' +
+              'display:flex;align-items:center;gap:0;' +
+              'padding:8px 12px;margin-bottom:10px;margin-top:' + (idx > 0 ? '16px' : '0') + ';' +
+              'background:#8B6914;' +
+              'border:3px solid #1A1A1A;' +
+              'border-top-color:#C4A44A;border-left-color:#C4A44A;' +
+              'box-shadow:2px 2px 0px #1A1A1A;' +
+              'image-rendering:pixelated;' +
+              '">' +
+              '<div style="' +
+              '"></div>' +
+              '<div style="' +
+              'font-family:\'Pixelta\',sans-serif;font-size:15px;font-weight:700;' +
+              'color:#fff;letter-spacing:1.5px;text-shadow:0 1px 4px rgba(0,0,0,0.4);' +
+              '">' + cat.kategori + '</div>' +
+              '<div style="flex:1;height:1px;background:linear-gradient(to right,' + cat.warna + '88,transparent);margin-left:4px;"></div>' +
+              '</div>';
+
+            // ── Card tiap lomba (Minecraft inventory slot) ──
+            cat.items.forEach(function (lomba) {
+              html += '<div class="lomba-row" data-lomba=\'' + encodeURIComponent(JSON.stringify(lomba)) + '\'' +
+                ' style="' +
+                'position:relative;overflow:hidden;' +
+                'display:flex;align-items:center;gap:10px;' +
+                'padding:8px 10px;margin-bottom:4px;' +
+                'background:#8B8B8B;' +
+                'border:3px solid #1A1A1A;' +
+                'border-top-color:#C6C6C6;border-left-color:#C6C6C6;' +
+                'cursor:pointer;' +
+                'transition:all .1s;' +
+                'image-rendering:pixelated;' +
+                '">' +
+
+                // Thumbnail slot (darker inner slot like MC inventory)
+                '<div style="' +
+                'width:44px;height:44px;flex-shrink:0;' +
+                'border:2px solid #373737;' +
+                'border-top-color:#373737;border-left-color:#373737;' +
+                'border-bottom-color:#FFF;border-right-color:#FFF;' +
+                'background:#555;' +
+                'overflow:hidden;' +
+                '">' +
+                '<img src="' + lomba.gambar + '" style="width:100%;height:100%;object-fit:cover;image-rendering:pixelated;">' +
+                '</div>' +
+
+                // Teks
+                '<div style="flex:1;min-width:0;">' +
+                '<div style="' +
+                'font-family:\'Pixelta\',sans-serif;font-size:13px;font-weight:700;' +
+                'color:#FFFFFF;letter-spacing:0.5px;line-height:1.3;' +
+                'text-shadow:2px 2px 0px #3F3F3F;' +
+                '">' + lomba.nama + '</div>' +
+                '<div style="' +
+                'font-family:\'Poppins\',sans-serif;font-size:10px;' +
+                'color:#E0E0E0;margin-top:3px;' +
+                'text-shadow:1px 1px 0px #3F3F3F;' +
+                '">' + lomba.peserta + '</div>' +
+                '</div>' +
+
+                // Arrow button (Minecraft stone button)
+                '<div style="' +
+                'width:22px;height:22px;flex-shrink:0;' +
+                'background:#999;' +
+                'border:2px solid #1A1A1A;' +
+                'border-top-color:#DDD;border-left-color:#DDD;' +
+                'display:flex;align-items:center;justify-content:center;' +
+                'font-family:\'Pixelta\',sans-serif;font-size:12px;color:#333;font-weight:700;' +
+                '">></div>' +
+
+                '</div>';
+            });
+
+            html += '<div style="height:2px;"></div>';
+          });
+
+          area.innerHTML = html;
+
+          // Efek press & klik (Minecraft button press)
+          area.querySelectorAll('.lomba-row').forEach(function (row) {
+            row.addEventListener('touchstart', function () {
+              this.style.borderTopColor = '#373737';
+              this.style.borderLeftColor = '#373737';
+              this.style.borderBottomColor = '#C6C6C6';
+              this.style.borderRightColor = '#C6C6C6';
+              this.style.background = '#707070';
+            }, { passive: true });
+            row.addEventListener('touchend', function () {
+              this.style.borderTopColor = '#C6C6C6';
+              this.style.borderLeftColor = '#C6C6C6';
+              this.style.borderBottomColor = '#1A1A1A';
+              this.style.borderRightColor = '#1A1A1A';
+              this.style.background = '#8B8B8B';
+            }, { passive: true });
+            row.addEventListener('click', function () {
+              var lomba = JSON.parse(decodeURIComponent(row.getAttribute('data-lomba')));
+              openLombaModal(lomba);
+            });
+          });
+        }
+
+        function openLombaModal(lomba) {
+          // Cari warna kategori lomba ini
+          var warna = '#e8621a';
+          LOMBA_DATA.forEach(function (cat) {
+            cat.items.forEach(function (item) {
+              if (item.nama === lomba.nama) warna = cat.warna;
+            });
+          });
+
+          document.getElementById('lombaModalContent').innerHTML =
+            // Image Area (Pixelated Frame)
+            '<div style="margin:-20px -20px 16px; border-bottom:4px solid #1A1A1A; overflow:hidden; position:relative; background:#000;">' +
+            '<div class="swiper-container modal-swiper" style="width:100%; height:250px;">' +
+            '<div class="swiper-wrapper">' +
+            '<div class="swiper-slide">' +
+            '<img src="' + lomba.gambar + '" style="width:100%; height:100%; object-fit:cover; opacity:0.85; image-rendering:pixelated;">' +
+            '</div>' +
+            '</div>' +
+            '<div class="swiper-pagination"></div>' +
+            '</div>' +
+            // Overlay Text (Minecraft sign style)
+            '<div style="position:absolute; bottom:0; left:0; width:100%; padding:40px 20px 15px; background:linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index:10;">' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:24px;color:#fff;font-weight:700;letter-spacing:1px;text-shadow:3px 3px 0px #1A1A1A;">' + lomba.nama + '</div>' +
+            '<div style="display:inline-block;margin-top:8px;padding:4px 10px;background:#555;border:2px solid #1A1A1A;font-family:\'Pixelta\',sans-serif;font-size:10px;color:#fff;text-shadow:1px 1px 0px #000;">' + lomba.peserta + '</div>' +
+            '</div>' +
+            '</div>' +
+
+            // Info chips (Minecraft item slots)
+            '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">' +
+            '<div style="flex:1;min-width:130px;background:#8B8B8B;padding:10px;border:3px solid #1A1A1A;border-top-color:#C6C6C6;border-left-color:#C6C6C6;">' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:9px;color:#444;margin-bottom:6px;letter-spacing:0.5px;text-transform:uppercase;">Karakter Utama</div>' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:12px;color:#FFFFFF;font-weight:700;text-shadow:1px 1px 0px #3F3F3F;">' + lomba.kostum + '</div>' +
+            '</div>' +
+            '<div style="flex:1;min-width:130px;background:#8B8B8B;padding:10px;border:3px solid #1A1A1A;border-top-color:#C6C6C6;border-left-color:#C6C6C6;">' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:9px;color:#444;margin-bottom:6px;letter-spacing:0.5px;text-transform:uppercase;">Properti & Mic</div>' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:12px;color:#FFFFFF;font-weight:700;text-shadow:1px 1px 0px #3F3F3F;">' + lomba.format + '</div>' +
+            '</div>' +
+            '</div>' +
+
+            // Timeline Konsep (Minecraft style blocks)
+            '<div style="position:relative; margin-bottom:20px;">' +
+
+            // Konsep Masuk
+            '<div style="background:#555; padding:12px; margin-bottom:12px; border:3px solid #1A1A1A; border-top-color:#888; border-left-color:#888;">' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:14px;color:#FFD700;margin-bottom:8px;text-shadow:1px 1px 0px #000;border-bottom:2px solid #333;padding-bottom:4px;">[ Konsep Masuk ]</div>' +
+            '<div style="font-family:\'Poppins\',sans-serif;font-size:12px;color:#FFF;line-height:1.6;text-shadow:1px 1px 0px #222;">' + lomba.poin + '</div>' +
+            '</div>' +
+
+            // Konsep Keluar
+            '<div style="background:#555; padding:12px; border:3px solid #1A1A1A; border-top-color:#888; border-left-color:#888;">' +
+            '<div style="font-family:\'Pixelta\',sans-serif;font-size:14px;color:#FFD700;margin-bottom:8px;text-shadow:1px 1px 0px #000;border-bottom:2px solid #333;padding-bottom:4px;">[ Konsep Keluar ]</div>' +
+            '<div style="font-family:\'Poppins\',sans-serif;font-size:12px;color:#FFF;line-height:1.6;text-shadow:1px 1px 0px #222;">' + lomba.detail + '</div>' +
+            '</div>' +
+            '</div>' +
+
+            // Tombol Buka Naskah (Minecraft button)
+            '<div style="text-align:center; margin-top:20px;">' +
+            '<button onclick="document.getElementById(\'naskahContainer\').style.display=\'block\'; this.style.display=\'none\';" style="background:#999; color:#333; border:3px solid #1A1A1A; border-top-color:#DDD; border-left-color:#DDD; padding:12px 24px; font-family:\'Pixelta\',sans-serif; font-size:16px; cursor:pointer; width:100%; transition:all 0.1s ease;" onmousedown="this.style.borderTopColor=\'#333\';this.style.borderLeftColor=\'#333\';this.style.borderBottomColor=\'#DDD\';this.style.borderRightColor=\'#DDD\';this.style.background=\'#777\';" onmouseup="this.style.borderTopColor=\'#DDD\';this.style.borderLeftColor=\'#DDD\';this.style.borderBottomColor=\'#1A1A1A\';this.style.borderRightColor=\'#1A1A1A\';this.style.background=\'#999\';">' +
+            'Baca Naskah Drama' +
+            '</button>' +
+            '</div>' +
+            // Container Naskah (Minecraft Book style)
+            '<div id="naskahContainer" style="display:none; margin-top:16px; padding:20px; background:#E5C298; border:3px solid #3D2314; box-shadow:inset 0 0 10px rgba(0,0,0,0.5); max-height:350px; overflow-y:auto; font-family:\'Poppins\',sans-serif; font-size:13px; color:#2C1808; text-align:right; direction:rtl; line-height:1.8;">' +
+            (typeof NASKAH_TEXT !== "undefined" && NASKAH_TEXT[lomba.nama] ? NASKAH_TEXT[lomba.nama] : "Naskah belum tersedia.") +
+            '</div>';
+
+          setTimeout(function () {
+            new Swiper('.modal-swiper', {
+              loop: true,
+              pagination: {
+                el: '.swiper-pagination',
+                dynamicBullets: true,
+              },
+            });
+          }, 100);
+
+          modalLomba.style.display = 'flex';
+        }
+
+        buildScrollList();
+
+        // Close modal
+        document.getElementById('closeLomba').addEventListener('click', function () {
+          modalLomba.style.display = 'none';
+        });
+        modalLomba.addEventListener('click', function (e) {
+          if (e.target === modalLomba) modalLomba.style.display = 'none';
+        });
+      })();
+      document.getElementById('mapImg').src = CONFIG.mapImage;
+      document.getElementById('lokasiTeks').textContent = CONFIG.lokasi;
+      document.getElementById('mapLink').href = CONFIG.mapsUrl;
+
+      // Slide 7 — Countdown
+      document.getElementById('countdownWrapper').dataset.datetime = CONFIG.countdownTarget;
+      document.getElementById('countdown_logo').src = CONFIG.logo;
+      document.getElementById('pesanCountdown').textContent = CONFIG.pesanKesimpulan;
+
+      // Slide 8 — Unduh
+      document.getElementById('pesanUnduh').innerHTML = CONFIG.pesanUnduh;
+      document.getElementById('unduhLink').href = CONFIG.guidebookUrl;
+
+      // Slide 9 — Penutup
+      document.getElementById('penutupLogo').src = CONFIG.logo;
+      document.getElementById('logoFooter1').src = CONFIG.logoFooter1;
+      document.getElementById('logoFooter2').src = CONFIG.logoFooter2;
+      document.getElementById('pesanPenutup').textContent = CONFIG.pesanPenutup;
+
+      // ── Swiper init ──
+      new Swiper('.mySwiper', {
+        loop: true,
+        spaceBetween: 20,
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        breakpoints: {
+          0: { slidesPerView: 1.1 },
+          768: { slidesPerView: 2 },
+        },
+      });
+
+      // ── Modal peserta ──
+      const modal = document.getElementById('modalLirik');
+      const isiLirik = document.querySelector('.isi-lirik');
+      const closeBtn = document.querySelector('.close-lirik');
+
+      document.querySelectorAll('.img-foto-lirik').forEach(img => {
+        img.addEventListener('click', () => {
+          isiLirik.innerHTML = img.getAttribute('data-lirik');
+          modal.style.display = 'flex';
+        });
+      });
+      closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+    });
+
+    // ── Cek browser ──
+    var notSupport = document.getElementById('notSupport');
+    function checkBrowser() {
+      if (navigator.userAgent.indexOf('UCBrowser') !== -1 ||
+        navigator.userAgent.indexOf('MiuiBrowser') !== -1 ||
+        navigator.userAgent.indexOf('OppoBrowser') !== -1) {
+        showModal(notSupport);
+        if (loader) loader.style.display = 'none';
+      }
+    }
+    checkBrowser();
+  </script>
+
+</body>
+
+</html>

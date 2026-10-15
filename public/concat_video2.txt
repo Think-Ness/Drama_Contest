@@ -1,0 +1,8 @@
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/First-person_continuous_zoom-in._A_white-gloved_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Camera_zooms_straight_into_the_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Camera_flies_past_the_gold-sealed_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Camera_moves_forward_between_the_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Camera_pushes_forward_into_the_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Locked_camera_slowly_pushing_in_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Camera_dives_down_past_the_20261016052517.mp4'
+file 'D:/01. Project/04. Website/Drama Contest/public/Video2/Extreme_close-up_zoom_directly_into_20261016052517.mp4'
