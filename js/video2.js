@@ -59,6 +59,113 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ─── ROYAL ENVELOPE THEATRE PRELOADER CONTROLLER ───
+  const preloader = document.getElementById('theatre-preloader');
+  const preloaderEnvelope = document.getElementById('preloader-envelope');
+  const preloaderEnvelopeImg = document.getElementById('preloader-envelope-img');
+  const preloaderProgressFill = document.getElementById('preloader-progress-fill');
+  const preloaderStatusText = document.getElementById('preloader-status-text');
+  const btnEnterTheatre = document.getElementById('btn-enter-theatre');
+
+  let preloaderProgress = 0;
+  let preloaderReady = false;
+  let preloaderDismissed = false;
+
+  function updatePreloaderStatus(pct, message) {
+    if (!preloaderProgressFill || !preloaderStatusText) return;
+    preloaderProgress = Math.max(preloaderProgress, Math.min(100, Math.round(pct)));
+    preloaderProgressFill.style.width = `${preloaderProgress}%`;
+    if (message) {
+      preloaderStatusText.textContent = `${message} · ${preloaderProgress}%`;
+    }
+  }
+
+  // Progressive preloader simulation while assets and video load
+  const loadInterval = setInterval(() => {
+    if (preloaderDismissed) {
+      clearInterval(loadInterval);
+      return;
+    }
+
+    let targetPct = 35;
+    if (document.readyState === 'complete') targetPct += 35;
+    if (state.videoReady) targetPct += 30;
+
+    if (preloaderProgress < targetPct) {
+      preloaderProgress += Math.random() * 8 + 4;
+      if (preloaderProgress >= 100) preloaderProgress = 100;
+      updatePreloaderStatus(preloaderProgress, preloaderProgress >= 100 ? 'ROYAL INVITATION READY' : 'PREPARING THEATRE STAGE');
+    }
+
+    if (preloaderProgress >= 95 || (state.videoReady && preloaderProgress >= 80)) {
+      setPreloaderReady();
+      clearInterval(loadInterval);
+    }
+  }, 120);
+
+  function setPreloaderReady() {
+    if (preloaderReady) return;
+    preloaderReady = true;
+    updatePreloaderStatus(100, 'ROYAL INVITATION UNSEALED');
+    if (btnEnterTheatre) {
+      btnEnterTheatre.classList.add('ready');
+    }
+    if (preloaderEnvelope) {
+      preloaderEnvelope.style.transform = 'scale(1.03)';
+    }
+  }
+
+  function dismissPreloader() {
+    if (preloaderDismissed) return;
+    preloaderDismissed = true;
+
+    // Transition envelope from closed to opened
+    if (preloaderEnvelopeImg) {
+      preloaderEnvelopeImg.src = 'public/assets/Opened Envelope.png';
+    }
+
+    // Gentle wax seal burst
+    const seal = document.getElementById('preloader-wax-seal');
+    if (seal) {
+      seal.style.transform = 'translate(-50%, -50%) scale(1.6)';
+      seal.style.opacity = '0';
+      seal.style.transition = 'all 0.5s ease-out';
+    }
+
+    setTimeout(() => {
+      if (preloader) {
+        preloader.classList.add('dismissed');
+      }
+      // Warm up video playback for a split second to ensure GPU decoders are engaged
+      if (video) {
+        video.currentTime = 0.05;
+        video.play().then(() => video.pause()).catch(() => {});
+      }
+      if (ambientVideo) {
+        ambientVideo.currentTime = 0.05;
+        ambientVideo.play().then(() => ambientVideo.pause()).catch(() => {});
+      }
+    }, 450);
+  }
+
+  if (btnEnterTheatre) {
+    btnEnterTheatre.addEventListener('click', dismissPreloader);
+  }
+  if (preloaderEnvelope) {
+    preloaderEnvelope.addEventListener('click', dismissPreloader);
+    preloaderEnvelope.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        dismissPreloader();
+      }
+    });
+  }
+
+  // Safety fallback: allow click anywhere on preloader once ready, or after 3.5s timeout
+  setTimeout(() => {
+    setPreloaderReady();
+  }, 3500);
+
   // Video Seek Queue Management
   let isSeeking = false;
   let pendingSeekTime = null;

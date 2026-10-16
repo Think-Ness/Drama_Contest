@@ -19,6 +19,44 @@
 </head>
 <body>
 
+  <!-- ==========================================================================
+       ROYAL ENVELOPE THEATRE PRELOADER & ASSET RENDER GATEWAY
+       ========================================================================== -->
+  <section id="theatre-preloader" class="theatre-preloader" aria-label="Royal Invitation Preloader">
+    <div class="preloader-spotlight" aria-hidden="true"></div>
+    
+    <!-- Royal Sealed Envelope Graphic -->
+    <div class="preloader-envelope-box" id="preloader-envelope" role="button" tabindex="0" title="Click or tap to break the royal wax seal">
+      <img id="preloader-envelope-img" src="public/assets/Closed Envelope.png" alt="Royal Sealed Envelope" class="preloader-envelope-img" />
+      <div class="preloader-wax-seal" id="preloader-wax-seal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F5E6BE" stroke-width="2">
+          <path d="M12 2L15 8L21 9L17 14L18 20L12 17L6 20L7 14L3 9L9 8L12 2Z" fill="#F5E6BE" fill-opacity="0.35"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Theatrical Royal Typography -->
+    <span class="preloader-kicker">PONDOK MODERN DARUSSALAM GONTOR</span>
+    <h1 class="preloader-title">ENGLISH DRAMA CONTEST 1448</h1>
+    <p class="preloader-motto">“Language is Our Crown · The Royal Invitation”</p>
+
+    <!-- Buffer Progress Tracker -->
+    <div class="preloader-progress-wrap">
+      <div class="preloader-progress-track">
+        <div id="preloader-progress-fill" class="preloader-progress-fill"></div>
+      </div>
+      <span id="preloader-status-text" class="preloader-status-text">BUFFERING THEATRE STAGE... 0%</span>
+    </div>
+
+    <!-- Entrance Action Button -->
+    <button id="btn-enter-theatre" class="btn-enter-theatre">
+      <span>BREAK THE ROYAL SEAL · ENTER THEATRE</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </section>
+
   <!-- SVG Filter Grain Definition -->
   <svg class="svg-defs" style="display:none;" aria-hidden="true">
     <filter id="grainNoise">
@@ -120,6 +158,12 @@
             <p class="editorial-desc" style="font-size: 14px; line-height: 1.7;">
               Pondok Modern Darussalam Gontor educates its students across all aspects of life—language, Syari'ah, science, art, character, and mentality. The English Drama Contest Inter-Dormitory 1448 / 2026 is a premier program designed to elevate English proficiency, master the art of the podium, and forge unbreakable teamwork among actors and committees alike.
             </p>
+            <div class="interlude-scroll-prompt">
+              <span>CONTINUE SCROLLING TO ADVANCE</span>
+              <svg class="scroll-prompt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
       </section>
@@ -150,6 +194,12 @@
                 <p class="col-sub">Main Auditorium of Pondok Modern Darussalam Gontor, Ponorogo.</p>
               </div>
             </div>
+            <div class="interlude-scroll-prompt">
+              <span>CONTINUE SCROLLING TO ADVANCE</span>
+              <svg class="scroll-prompt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
       </section>
@@ -173,6 +223,12 @@
                 <h4 class="col-val" style="font-size: 15px;">6 Official Judging Divisions</h4>
                 <p class="col-sub">Under the guidance of PMDG Leadership, Language Advisory Council (LAC), and Teachers of ITTC/KMI. 15 original scripts are evaluated on Language, Story, Narrator, Costume &amp; Property, Performer, and Secretary.</p>
               </div>
+            </div>
+            <div class="interlude-scroll-prompt">
+              <span>CONTINUE SCROLLING · CHIEF COMMITTEES</span>
+              <svg class="scroll-prompt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
           </div>
         </div>
@@ -210,6 +266,12 @@
             “From countless nights of script recitation to final stage blocking in the dark.” Explore the 15 dormitory rehearsal filmstills below (click any photo to read manuscript):
           </p>
           <div id="cinema-filmstrip" class="cinema-filmstrip"></div>
+          <div class="interlude-scroll-prompt" style="margin-top: 18px;">
+            <span>CONTINUE SCROLLING · STAGE PHILOSOPHY</span>
+            <svg class="scroll-prompt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
       </section>
 
@@ -262,6 +324,13 @@
           <!-- 15 Competing Scenarios -->
           <span class="editorial-kicker" style="color:var(--gold-primary); margin-top: 16px;">15 COMPETING SCENARIOS (CLICK TO READ MANUSCRIPT)</span>
           <div id="scenarios-grid" class="scenarios-grid"></div>
+          
+          <div class="interlude-scroll-prompt" style="margin-top: 24px;">
+            <span>CONTINUE SCROLLING · THE WINNER'S CROWN</span>
+            <svg class="scroll-prompt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
       </section>
 

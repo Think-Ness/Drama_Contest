@@ -839,3 +839,222 @@ body.fit-cover .v2-scrolly-video {
   background: var(--bg-maroon-bright);
   color: #FFF;
 }
+
+/* ==========================================================================
+   THEATRE INTRO PRELOADER: "The Royal Sealed Envelope"
+   ========================================================================== */
+.theatre-preloader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #260309 0%, #150206 55%, #090204 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  transition: opacity 0.8s var(--ease-theatre), visibility 0.8s var(--ease-theatre), transform 0.8s var(--ease-theatre);
+}
+
+.theatre-preloader.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.preloader-spotlight {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(320px, 60vw, 650px);
+  height: clamp(320px, 60vw, 650px);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(107, 11, 29, 0.08) 45%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.preloader-envelope-box {
+  position: relative;
+  width: clamp(200px, 42vw, 300px);
+  margin-bottom: 24px;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9));
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preloader-envelope-box:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.preloader-envelope-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.4s ease;
+}
+
+.preloader-wax-seal {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #8A0E23 0%, #4E0815 100%);
+  border: 1px solid var(--gold-antique);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: waxPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes waxPulse {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(212, 175, 55, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.9), 0 0 26px rgba(212, 175, 55, 0.6);
+  }
+}
+
+.preloader-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--gold-antique);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.preloader-title {
+  font-family: var(--font-vogun);
+  font-size: clamp(24px, 5vw, 42px);
+  color: #FFF;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.preloader-motto {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: clamp(13px, 2vw, 16px);
+  color: var(--gold-champagne);
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.preloader-progress-wrap {
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 20px;
+}
+
+.preloader-progress-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(212, 175, 55, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.preloader-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-antique), var(--gold-champagne));
+  transition: width 0.2s ease;
+}
+
+.preloader-status-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.btn-enter-theatre {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--bg-maroon-rich) 0%, var(--bg-maroon-bright) 100%);
+  border: 1px solid var(--gold-primary);
+  border-radius: 3px;
+  color: #FFF;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.25);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.btn-enter-theatre.ready {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.btn-enter-theatre:hover {
+  background: linear-gradient(135deg, var(--bg-maroon-bright) 0%, #8A0E23 100%);
+  box-shadow: 0 12px 36px rgba(107, 11, 29, 0.6), 0 0 28px rgba(245, 230, 190, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   SCROLL CONTINUATION HINT ("CONTINUE SCROLLING")
+   ========================================================================== */
+.interlude-scroll-prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 8px 18px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 20px;
+  background: rgba(9, 2, 4, 0.7);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold-champagne);
+  text-transform: uppercase;
+  animation: pulsePrompt 2s infinite ease-in-out;
+  cursor: default;
+  user-select: none;
+}
+
+@keyframes pulsePrompt {
+  0%, 100% {
+    opacity: 0.75;
+    transform: translateY(0);
+    border-color: rgba(212, 175, 55, 0.2);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(3px);
+    border-color: rgba(212, 175, 55, 0.55);
+    box-shadow: 0 4px 16px rgba(107, 11, 29, 0.4);
+  }
+}
+
+.scroll-prompt-arrow {
+  animation: bounceArrow 1.5s infinite ease-in-out;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
