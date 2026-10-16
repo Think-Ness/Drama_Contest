@@ -154,10 +154,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── THEATRICAL SOUNDTRACK AUDIO CONTROLLER (SCROLL-SYNCHRONIZED) ───
   const theatreAudio = document.getElementById('theatre-audio');
-  const audioPill = document.getElementById('theatre-audio-pill');
-  const audioPillLabel = document.getElementById('audio-pill-label');
+  const audioBtn = document.getElementById('theatre-audio-btn') || document.getElementById('theatre-audio-pill');
   let isAudioPlaying = false;
   let audioSeekTimeout = null;
+
+  // Ranges where pop-up interludes are active and video is paused
+  const INTERLUDE_RANGES = [
+    { start: 0.28, end: 0.46 }, // Interlude 1 (3 steps)
+    { start: 0.54, end: 0.66 }, // Interlude 2 (Cinema Filmstrip)
+    { start: 0.74, end: 0.88 }  // Interlude 3 (15 Scenarios)
+  ];
+
+  function isInsideInterlude(p) {
+    return INTERLUDE_RANGES.some((r) => p >= r.start && p <= r.end);
+  }
+
+  function updateAudioButtonState() {
+    if (!audioBtn) return;
+    if (isAudioPlaying) {
+      audioBtn.classList.add('playing');
+      audioBtn.setAttribute('title', 'Pause Theatrical Soundtrack');
+      audioBtn.setAttribute('aria-label', 'Pause Theatrical Soundtrack');
+    } else {
+      audioBtn.classList.remove('playing');
+      audioBtn.setAttribute('title', 'Play Theatrical Soundtrack');
+      audioBtn.setAttribute('aria-label', 'Play Theatrical Soundtrack');
+    }
+  }
 
   function startTheatreAudio(initialTime) {
     if (!theatreAudio) return;
@@ -169,37 +192,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     theatreAudio.play().then(() => {
       isAudioPlaying = true;
-      if (audioPill) audioPill.classList.add('playing');
-      if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: PLAYING';
+      updateAudioButtonState();
     }).catch((err) => {
       console.warn('Audio playback waiting for interaction:', err);
       isAudioPlaying = false;
-      if (audioPill) audioPill.classList.remove('playing');
-      if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: MUTED';
+      updateAudioButtonState();
     });
   }
 
-  function syncAudioWithScroll(targetTime) {
+  function syncAudioWithScroll(targetTime, p) {
     if (!theatreAudio) return;
 
     // If preloader is dismissed and audio was not yet triggered by browser autoplay policy
     if (!isAudioPlaying && preloaderDismissed) {
       startTheatreAudio(targetTime);
+      return;
     }
 
     if (theatreAudio.paused) return;
 
+    // CRITICAL FIX: If user is scrolling inside an interlude popup, DO NOT force seek/reset!
+    // Let the soundtrack play naturally and continuously across the reading session without looping!
+    if (isInsideInterlude(p)) {
+      return;
+    }
+
     const currentAudio = theatreAudio.currentTime;
     const diff = Math.abs(currentAudio - targetTime);
 
-    // If scroll changed scene or diverged by > 1.2s, smoothly sync audio timestamp
-    if (diff > 1.2) {
+    // Outside interludes: only sync if user actively scrolled past a scene boundary (> 3.0s delta)
+    if (diff > 3.0) {
       if (audioSeekTimeout) clearTimeout(audioSeekTimeout);
       audioSeekTimeout = setTimeout(() => {
         try {
           theatreAudio.currentTime = Math.max(0, Math.min(79.5, targetTime));
         } catch (_) {}
-      }, 40);
+      }, 50);
     }
   }
 
@@ -211,13 +239,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       theatreAudio.pause();
       isAudioPlaying = false;
-      if (audioPill) audioPill.classList.remove('playing');
-      if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: MUTED';
+      updateAudioButtonState();
     }
   }
 
-  if (audioPill) {
-    audioPill.addEventListener('click', (e) => {
+  if (audioBtn) {
+    audioBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleTheatreAudio();
     });
@@ -405,9 +432,9 @@ document.addEventListener('DOMContentLoaded', () => {
       setActiveStep('step-scene-8', 'ACT VII · WHO WILL BE THE WINNER?');
     }
 
-    // Synchronize Audio Soundtrack Timestamp with Scroll Scene
+    // Synchronize Audio Soundtrack Timestamp with Scroll Scene (skips looping inside interludes)
     const targetAudioTime = calculateVideoTimeFromScroll(p);
-    syncAudioWithScroll(targetAudioTime);
+    syncAudioWithScroll(targetAudioTime, p);
 
     // Seamless Infinite Loop (at 99.8% jump back to 0.2%)
     if (state.infiniteLoop && p >= 0.998) {

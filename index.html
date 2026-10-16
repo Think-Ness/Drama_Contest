@@ -62,15 +62,17 @@
   <!-- High-Fidelity Theatrical Soundtrack Audio -->
   <audio id="theatre-audio" src="public/audio/theatre-soundtrack.mp3" preload="auto" loop></audio>
 
-  <!-- Floating Minimal Audio Controller Pill -->
-  <button id="theatre-audio-pill" class="theatre-audio-pill" aria-label="Toggle Theatrical Soundtrack">
-    <div class="sound-waves" aria-hidden="true">
-      <span class="sound-wave-bar"></span>
-      <span class="sound-wave-bar"></span>
-      <span class="sound-wave-bar"></span>
-      <span class="sound-wave-bar"></span>
-    </div>
-    <span id="audio-pill-label">ORCHESTRA: MUTED</span>
+  <!-- Floating Minimal Audio Controller (Icon Only) -->
+  <button id="theatre-audio-btn" class="theatre-audio-btn" aria-label="Toggle Theatrical Soundtrack" title="Toggle Theatrical Soundtrack">
+    <!-- Play Icon (shown when paused) -->
+    <svg class="audio-icon-play" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+      <polygon points="6 3 20 12 6 21 6 3"></polygon>
+    </svg>
+    <!-- Pause Icon (shown when playing) -->
+    <svg class="audio-icon-pause" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+      <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+      <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+    </svg>
   </button>
 
   <!-- SVG Filter Grain Definition -->
