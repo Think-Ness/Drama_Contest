@@ -136,8 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (preloader) {
         preloader.classList.add('dismissed');
       }
-      // Start theatrical soundtrack audio on genuine user entrance gesture
-      startTheatreAudio();
+      // Start theatrical soundtrack audio synchronized with current scroll position
+      const initialAudioTime = calculateVideoTimeFromScroll(state.progress);
+      startTheatreAudio(initialAudioTime);
 
       // Warm up video playback for a split second to ensure GPU decoders are engaged
       if (video) {
@@ -151,15 +152,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 450);
   }
 
-  // ─── THEATRICAL SOUNDTRACK AUDIO CONTROLLER ───
+  // ─── THEATRICAL SOUNDTRACK AUDIO CONTROLLER (SCROLL-SYNCHRONIZED) ───
   const theatreAudio = document.getElementById('theatre-audio');
   const audioPill = document.getElementById('theatre-audio-pill');
   const audioPillLabel = document.getElementById('audio-pill-label');
   let isAudioPlaying = false;
+  let audioSeekTimeout = null;
 
-  function startTheatreAudio() {
+  function startTheatreAudio(initialTime) {
     if (!theatreAudio) return;
     theatreAudio.volume = 0.75;
+    if (typeof initialTime === 'number' && !isNaN(initialTime)) {
+      try {
+        theatreAudio.currentTime = Math.max(0, Math.min(79.5, initialTime));
+      } catch (_) {}
+    }
     theatreAudio.play().then(() => {
       isAudioPlaying = true;
       if (audioPill) audioPill.classList.add('playing');
@@ -172,14 +179,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function syncAudioWithScroll(targetTime) {
+    if (!theatreAudio) return;
+
+    // If preloader is dismissed and audio was not yet triggered by browser autoplay policy
+    if (!isAudioPlaying && preloaderDismissed) {
+      startTheatreAudio(targetTime);
+    }
+
+    if (theatreAudio.paused) return;
+
+    const currentAudio = theatreAudio.currentTime;
+    const diff = Math.abs(currentAudio - targetTime);
+
+    // If scroll changed scene or diverged by > 1.2s, smoothly sync audio timestamp
+    if (diff > 1.2) {
+      if (audioSeekTimeout) clearTimeout(audioSeekTimeout);
+      audioSeekTimeout = setTimeout(() => {
+        try {
+          theatreAudio.currentTime = Math.max(0, Math.min(79.5, targetTime));
+        } catch (_) {}
+      }, 40);
+    }
+  }
+
   function toggleTheatreAudio() {
     if (!theatreAudio) return;
     if (theatreAudio.paused || !isAudioPlaying) {
-      theatreAudio.play().then(() => {
-        isAudioPlaying = true;
-        if (audioPill) audioPill.classList.add('playing');
-        if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: PLAYING';
-      }).catch(() => {});
+      const currentTime = calculateVideoTimeFromScroll(state.progress);
+      startTheatreAudio(currentTime);
     } else {
       theatreAudio.pause();
       isAudioPlaying = false;
@@ -377,6 +405,10 @@ document.addEventListener('DOMContentLoaded', () => {
       setActiveStep('step-scene-8', 'ACT VII · WHO WILL BE THE WINNER?');
     }
 
+    // Synchronize Audio Soundtrack Timestamp with Scroll Scene
+    const targetAudioTime = calculateVideoTimeFromScroll(p);
+    syncAudioWithScroll(targetAudioTime);
+
     // Seamless Infinite Loop (at 99.8% jump back to 0.2%)
     if (state.infiniteLoop && p >= 0.998) {
       state.isTeleporting = true;
@@ -385,6 +417,9 @@ document.addEventListener('DOMContentLoaded', () => {
       state.progress = 0.002;
       state.currentVideoTime = 0.2;
       applySeek(state.currentVideoTime);
+      if (theatreAudio) {
+        theatreAudio.currentTime = 0.2;
+      }
       setActiveStep('step-scene-1', 'ACT I · THE SEALED SUMMONS');
       setTimeout(() => {
         state.isTeleporting = false;
