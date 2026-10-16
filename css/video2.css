@@ -497,80 +497,84 @@ body.fit-cover .v2-scrolly-video {
   letter-spacing: 0.15em;
 }
 
-/* ─── BITE-SIZED PROGRESSIVE 5W + 1H INTERLUDE STEPS ─── */
-/* Positioned in lower portion so leaders' faces in background video remain 100% visible */
-.editorial-bento-card {
-  width: 100%;
-  max-width: 760px;
-  margin-top: auto;
-  margin-bottom: clamp(16px, 4vh, 32px);
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-  padding: clamp(16px, 3.5vw, 28px);
-  background: rgba(18, 2, 6, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(212, 175, 55, 0.22);
-  border-bottom: 2px solid var(--bg-maroon-bright);
-  border-radius: 6px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 24px rgba(107, 11, 29, 0.35);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+/* ═══════════════════════════════════════════════════════════════════════════
+   INTERLUDE PLACARD CARDS — Clean Minimal Editorial
+   Architecture: Near-black field · Single gold left rule · Typography only
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Scene wrapper: dock cards to lower viewport */
+.v2-scene-step:has(.editorial-bento-card) {
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: clamp(14px, 3.5vh, 28px);
 }
 
+/* The Editorial Placard — dead simple */
+.editorial-bento-card {
+  position: relative;
+  width: calc(100% - 32px);
+  max-width: 680px;
+  margin: 0 auto;
+  background: rgba(4, 0, 2, 0.93);
+
+  /* Single thin gold left accent — the ONLY decoration */
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  border-left: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: 0;
+
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.92);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Card Header Bar ── */
 .step-nav-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 9px clamp(14px, 3vw, 22px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.10);
 }
 
+/* Act badge */
 .step-badge {
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  color: var(--gold-champagne);
+  font-size: 9.5px;
+  letter-spacing: 0.32em;
+  color: rgba(197, 160, 57, 0.7);
   text-transform: uppercase;
 }
 
+/* Minimize toggle — text link, no border, no background */
 .btn-minimize-toggle {
-  background: rgba(56, 5, 14, 0.65);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 14px;
-  color: var(--gold-champagne);
+  background: transparent;
+  border: none;
+  padding: 0 0 0 14px;
+  color: rgba(245, 230, 190, 0.35);
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  font-size: 8.5px;
+  letter-spacing: 0.24em;
   cursor: pointer;
   text-transform: uppercase;
-  padding: 4px 12px;
-  opacity: 0.9;
-  transition: all 0.25s ease;
+  transition: color 0.2s ease;
+  line-height: 1;
+  border-left: 1px solid rgba(212, 175, 55, 0.12);
 }
 
 .btn-minimize-toggle:hover {
-  opacity: 1;
-  color: #FFF;
-  border-color: var(--gold-primary);
-  background: var(--bg-maroon-bright);
+  color: rgba(245, 230, 190, 0.8);
 }
 
-/* Collapsed state: snaps down to bottom edge as a sleek floating pill */
+/* ── Card Body ── */
+.bento-collapsible-content {
+  padding: clamp(14px, 2.5vw, 20px) clamp(14px, 3vw, 22px) clamp(12px, 2vh, 18px);
+}
+
+/* ── Minimized State: tight single-line pill anchored to bottom ── */
 .editorial-bento-card.minimized {
-  margin-top: auto;
-  margin-bottom: clamp(12px, 2.5vh, 20px);
-  margin-left: auto;
-  margin-right: auto;
-  padding: 8px 18px;
-  background: rgba(14, 1, 5, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--gold-primary);
-  border-radius: 30px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 16px rgba(212, 175, 55, 0.35);
+  background: rgba(4, 0, 2, 0.96);
+  border-left-color: rgba(212, 175, 55, 0.55);
   max-width: fit-content;
+  margin: 0 auto;
 }
 
 .editorial-bento-card.minimized .bento-collapsible-content {
@@ -578,20 +582,24 @@ body.fit-cover .v2-scrolly-video {
 }
 
 .editorial-bento-card.minimized .step-nav-header {
-  margin-bottom: 0;
-  padding-bottom: 0;
   border-bottom: none;
-  gap: 16px;
+  padding: 9px 18px;
+  gap: 14px;
 }
 
+.editorial-bento-card.minimized .btn-minimize-toggle {
+  color: rgba(245, 230, 190, 0.55);
+}
+
+/* ── Data Grid Columns ── */
 .clean-columns {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  margin-top: 18px;
+  gap: 0;
+  margin-top: 10px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 560px) {
   .clean-columns-3 {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -601,33 +609,34 @@ body.fit-cover .v2-scrolly-video {
 }
 
 .clean-column-item {
-  padding: 10px 0;
-  border-top: 1px solid rgba(212, 175, 55, 0.12);
+  padding: 10px 12px 10px 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.08);
 }
 
 .col-label {
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--gold-antique);
-  letter-spacing: 0.22em;
+  font-size: 9px;
+  color: rgba(197, 160, 57, 0.65);
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   display: block;
 }
 
 .col-val {
   font-family: var(--font-vogun);
-  font-size: 17px;
+  font-size: 15px;
   color: #FFF;
   letter-spacing: 0.04em;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  line-height: 1.2;
 }
 
 .col-sub {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--text-cream);
-  line-height: 1.55;
-  opacity: 0.85;
+  line-height: 1.65;
+  opacity: 0.75;
 }
 
 /* ─── INTERLUDE 2: SEAMLESS FLOWING CINEMA PHOTO REEL ─── */
@@ -917,11 +926,33 @@ body.fit-cover .v2-scrolly-video {
   transform: translateY(-4px) scale(1.02);
 }
 
-.preloader-envelope-img {
+/* Crossfade envelope: closed image sets the layout height; open floats above */
+.env-img {
   width: 100%;
   height: auto;
   display: block;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Open envelope starts invisible, overlays the closed one */
+.env-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Closed envelope fades out when .opening class is set on box */
+.preloader-envelope-box.opening .env-closed {
+  opacity: 0;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preloader-envelope-box.opening .env-open {
+  opacity: 1;
 }
 
 .preloader-wax-seal {
@@ -1007,82 +1038,80 @@ body.fit-cover .v2-scrolly-video {
   text-transform: uppercase;
 }
 
-.btn-enter-theatre {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, var(--bg-maroon-rich) 0%, var(--bg-maroon-bright) 100%);
-  border: 1px solid var(--gold-primary);
-  border-radius: 3px;
-  color: #FFF;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.25);
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-}
 
-.btn-enter-theatre.ready {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.btn-enter-theatre:hover {
-  background: linear-gradient(135deg, var(--bg-maroon-bright) 0%, #8A0E23 100%);
-  box-shadow: 0 12px 36px rgba(107, 11, 29, 0.6), 0 0 28px rgba(245, 230, 190, 0.4);
-  transform: translateY(-2px);
-}
 
 /* ==========================================================================
-   SCROLL CONTINUATION HINT ("CONTINUE SCROLLING")
+   THEATRICAL SCROLL CONTINUATION SIGNAL
+   Aesthetic: Ornamental theatre marquee divider — absolutely NO pill buttons
    ========================================================================== */
 .interlude-scroll-prompt {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-top: 24px;
-  padding: 8px 18px;
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  border-radius: 20px;
-  background: rgba(9, 2, 4, 0.7);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--gold-champagne);
-  text-transform: uppercase;
-  animation: pulsePrompt 2s infinite ease-in-out;
+  gap: 6px;
+  margin-top: 18px;
   cursor: default;
   user-select: none;
+  animation: promptFade 3s infinite ease-in-out;
 }
 
-@keyframes pulsePrompt {
-  0%, 100% {
-    opacity: 0.75;
-    transform: translateY(0);
-    border-color: rgba(212, 175, 55, 0.2);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(3px);
-    border-color: rgba(212, 175, 55, 0.55);
-    box-shadow: 0 4px 16px rgba(107, 11, 29, 0.4);
-  }
+/* Ornamental horizontal rule with centre text */
+.interlude-scroll-prompt > span {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.38em;
+  color: rgba(197, 160, 57, 0.65);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
 }
 
+/* Fine hairline rules flanking text */
+.interlude-scroll-prompt > span::before,
+.interlude-scroll-prompt > span::after {
+  content: '';
+  display: block;
+  width: clamp(24px, 5vw, 48px);
+  height: 1px;
+  background: rgba(212, 175, 55, 0.28);
+}
+
+/* Animated descent chevrons — 3 stacked fine strokes */
+.scroll-prompt-chevrons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.scroll-prompt-chevrons svg {
+  display: block;
+  opacity: 0;
+  stroke: rgba(212, 175, 55, 0.7);
+  animation: chevronCascade 1.8s infinite ease-in-out;
+}
+
+.scroll-prompt-chevrons svg:nth-child(1) { animation-delay: 0s; }
+.scroll-prompt-chevrons svg:nth-child(2) { animation-delay: 0.18s; }
+.scroll-prompt-chevrons svg:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes chevronCascade {
+  0%   { opacity: 0;    transform: translateY(-4px); }
+  40%  { opacity: 0.85; transform: translateY(0); }
+  75%  { opacity: 0.55; transform: translateY(3px); }
+  100% { opacity: 0;    transform: translateY(5px); }
+}
+
+@keyframes promptFade {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
+}
+
+/* Legacy arrow compatibility (hidden — replaced by chevrons) */
 .scroll-prompt-arrow {
-  animation: bounceArrow 1.5s infinite ease-in-out;
-}
-
-@keyframes bounceArrow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(3px); }
+  display: none;
 }
 
 /* ==========================================================================

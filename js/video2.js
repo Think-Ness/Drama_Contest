@@ -62,14 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── ROYAL ENVELOPE THEATRE PRELOADER CONTROLLER ───
   const preloader = document.getElementById('theatre-preloader');
   const preloaderEnvelope = document.getElementById('preloader-envelope');
-  const preloaderEnvelopeImg = document.getElementById('preloader-envelope-img');
+  const preloaderEnvClosed = document.getElementById('preloader-env-closed');
+  const preloaderEnvOpen = document.getElementById('preloader-env-open');
   const preloaderProgressFill = document.getElementById('preloader-progress-fill');
   const preloaderStatusText = document.getElementById('preloader-status-text');
-  const btnEnterTheatre = document.getElementById('btn-enter-theatre');
 
   let preloaderProgress = 0;
   let preloaderReady = false;
   let preloaderDismissed = false;
+
+  // Helper: real video buffer percentage (0-100)
+  function getBufferedPercent() {
+    if (!video || !video.buffered || !video.duration || video.duration === 0) return 0;
+    try {
+      let maxEnd = 0;
+      for (let i = 0; i < video.buffered.length; i++) {
+        maxEnd = Math.max(maxEnd, video.buffered.end(i));
+      }
+      return Math.min(100, (maxEnd / video.duration) * 100);
+    } catch (_) { return 0; }
+  }
 
   function updatePreloaderStatus(pct, message) {
     if (!preloaderProgressFill || !preloaderStatusText) return;
@@ -80,24 +92,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Progressive preloader simulation while assets and video load
+  // Progressive preloader: blends real video buffer data with simulated fill
   const loadInterval = setInterval(() => {
-    if (preloaderDismissed) {
-      clearInterval(loadInterval);
-      return;
+    if (preloaderDismissed) { clearInterval(loadInterval); return; }
+
+    const docBonus = document.readyState === 'complete' ? 20 : 0;
+    const vidBonus = state.videoReady ? 15 : 0;
+    const bufBonus = getBufferedPercent() * 0.65;
+    const realTarget = Math.min(99, docBonus + vidBonus + bufBonus);
+
+    if (preloaderProgress < realTarget) {
+      preloaderProgress = Math.min(99, preloaderProgress + Math.random() * 4 + 1.5);
+    } else if (preloaderProgress < 25) {
+      preloaderProgress += 0.6; // slow crawl so user sees it's alive
     }
 
-    let targetPct = 35;
-    if (document.readyState === 'complete') targetPct += 35;
-    if (state.videoReady) targetPct += 30;
+    const label = preloaderProgress >= 98 ? 'READY TO ENTER' :
+                  preloaderProgress >= 60 ? 'ALMOST READY' : 'BUFFERING STAGE';
+    updatePreloaderStatus(preloaderProgress, label);
 
-    if (preloaderProgress < targetPct) {
-      preloaderProgress += Math.random() * 8 + 4;
-      if (preloaderProgress >= 100) preloaderProgress = 100;
-      updatePreloaderStatus(preloaderProgress, preloaderProgress >= 100 ? 'ROYAL INVITATION READY' : 'PREPARING THEATRE STAGE');
-    }
-
-    if (preloaderProgress >= 95 || (state.videoReady && preloaderProgress >= 80)) {
+    const bufOk = state.videoReady && getBufferedPercent() >= 20;
+    if (preloaderProgress >= 95 || bufOk) {
       setPreloaderReady();
       clearInterval(loadInterval);
     }
@@ -106,12 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function setPreloaderReady() {
     if (preloaderReady) return;
     preloaderReady = true;
-    updatePreloaderStatus(100, 'ROYAL INVITATION UNSEALED');
-    if (btnEnterTheatre) {
-      btnEnterTheatre.classList.add('ready');
-    }
+    updatePreloaderStatus(100, 'TAP TO ENTER THE THEATRE');
+    // Gentle gold glow hint on the envelope
     if (preloaderEnvelope) {
-      preloaderEnvelope.style.transform = 'scale(1.03)';
+      preloaderEnvelope.style.filter =
+        'drop-shadow(0 20px 40px rgba(0,0,0,0.9)) drop-shadow(0 0 28px rgba(212,175,55,0.45))';
     }
   }
 
@@ -119,28 +133,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (preloaderDismissed) return;
     preloaderDismissed = true;
 
-    // Transition envelope from closed to opened
-    if (preloaderEnvelopeImg) {
-      preloaderEnvelopeImg.src = 'public/assets/Opened Envelope.png';
-    }
+    // Phase 1: smooth envelope crossfade closed → opened (750ms)
+    if (preloaderEnvelope) preloaderEnvelope.classList.add('opening');
 
-    // Gentle wax seal burst
-    const seal = document.getElementById('preloader-wax-seal');
-    if (seal) {
-      seal.style.transform = 'translate(-50%, -50%) scale(1.6)';
-      seal.style.opacity = '0';
-      seal.style.transition = 'all 0.5s ease-out';
-    }
-
+    // Phase 2: after crossfade, slide-scale the whole preloader out
     setTimeout(() => {
-      if (preloader) {
-        preloader.classList.add('dismissed');
-      }
-      // Start theatrical soundtrack audio synchronized with current scroll position
+      if (preloader) preloader.classList.add('dismissed');
+      // Start theatrical soundtrack audio
       const initialAudioTime = calculateVideoTimeFromScroll(state.progress);
       startTheatreAudio(initialAudioTime);
-
-      // Warm up video playback for a split second to ensure GPU decoders are engaged
+      // Warm up GPU video decoders
       if (video) {
         video.currentTime = 0.05;
         video.play().then(() => video.pause()).catch(() => {});
@@ -149,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ambientVideo.currentTime = 0.05;
         ambientVideo.play().then(() => ambientVideo.pause()).catch(() => {});
       }
-    }, 450);
+    }, 750);
   }
 
   // ─── THEATRICAL SOUNDTRACK AUDIO CONTROLLER (SCROLL-SYNCHRONIZED) ───
@@ -250,9 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (btnEnterTheatre) {
-    btnEnterTheatre.addEventListener('click', dismissPreloader);
-  }
   if (preloaderEnvelope) {
     preloaderEnvelope.addEventListener('click', dismissPreloader);
     preloaderEnvelope.addEventListener('keydown', (e) => {
