@@ -158,11 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let isAudioPlaying = false;
   let audioSeekTimeout = null;
 
-  // Ranges where pop-up interludes are active and video is paused
+  // Ranges where pop-up interludes are active and video is paused (compact, agile pacing)
   const INTERLUDE_RANGES = [
-    { start: 0.28, end: 0.46 }, // Interlude 1 (3 steps)
-    { start: 0.54, end: 0.66 }, // Interlude 2 (Cinema Filmstrip)
-    { start: 0.74, end: 0.88 }  // Interlude 3 (15 Scenarios)
+    { start: 0.27, end: 0.345 }, // Interlude 1 (3 bite-sized steps)
+    { start: 0.44, end: 0.54 },  // Interlude 2 (Cinema Filmstrip)
+    { start: 0.64, end: 0.78 }   // Interlude 3 (15 Scenarios)
   ];
 
   function isInsideInterlude(p) {
@@ -338,6 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─── MASTER PROGRESSIVE TIMELINE (80s Total Duration) ───
+  // Re-tuned for nimble, responsive scroll pacing (Interlude 1 reduced from 18% to 7.5%)
   function calculateVideoTimeFromScroll(p) {
     if (p <= 0.10) {
       // Scene 1: 0% -> 10% (Video 0s -> 10s)
@@ -345,30 +346,30 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (p <= 0.20) {
       // Scene 2: 10% -> 20% (Video 10s -> 20s)
       return 10 + ((p - 0.10) / 0.10) * 10;
-    } else if (p <= 0.28) {
-      // Scene 3: 20% -> 28% (Video 20s -> 28s)
-      return 20 + ((p - 0.20) / 0.08) * 8;
-    } else if (p <= 0.46) {
-      // INTERLUDE 1 (3 Bite-Sized Steps): Video pauses smoothly at 28.0s
+    } else if (p <= 0.27) {
+      // Scene 3: 20% -> 27% (Video 20s -> 28s)
+      return 20 + ((p - 0.20) / 0.07) * 8;
+    } else if (p <= 0.345) {
+      // INTERLUDE 1 (3 Bite-Sized Steps: 2.5% each): Video pauses smoothly at 28.0s
       return 28.0;
+    } else if (p <= 0.44) {
+      // Scene 4 (Our Leaders): 34.5% -> 44% (Video 28s -> 38s)
+      return 28 + ((p - 0.345) / 0.095) * 10;
     } else if (p <= 0.54) {
-      // Scene 4 (Our Leaders): 46% -> 54% (Video 28s -> 38s)
-      return 28 + ((p - 0.46) / 0.08) * 10;
-    } else if (p <= 0.66) {
       // INTERLUDE 2 (Cinema Filmstrip): Video pauses at 38.0s
       return 38.0;
-    } else if (p <= 0.74) {
-      // Scene 5 (The Podium & Crown): 66% -> 74% (Video 38s -> 58s)
-      return 38 + ((p - 0.66) / 0.08) * 20;
-    } else if (p <= 0.88) {
+    } else if (p <= 0.64) {
+      // Scene 5 (The Podium & Crown): 54% -> 64% (Video 38s -> 58s)
+      return 38 + ((p - 0.54) / 0.10) * 20;
+    } else if (p <= 0.78) {
       // INTERLUDE 3 (Scenarios & Adjudicators): Video pauses at 58.0s
       return 58.0;
-    } else if (p <= 0.94) {
-      // Scene 7 (Golden Mask): 88% -> 94% (Video 58s -> 68s)
-      return 58 + ((p - 0.88) / 0.06) * 10;
+    } else if (p <= 0.89) {
+      // Scene 7 (Golden Mask): 78% -> 89% (Video 58s -> 68s)
+      return 58 + ((p - 0.78) / 0.11) * 10;
     } else {
-      // Scene 8 (The Winner's Crown): 94% -> 100% (Video 68s -> 80s)
-      return 68 + ((p - 0.94) / 0.06) * 12;
+      // Scene 8 (The Winner's Crown): 89% -> 100% (Video 68s -> 80s)
+      return 68 + ((p - 0.89) / 0.11) * 12;
     }
   }
 
@@ -389,14 +390,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Mobile Touch & Viewport Stability Cache
+  let cachedMaxScroll = 0;
+  function updateMaxScroll() {
+    const scrollH = document.documentElement.scrollHeight || document.body.scrollHeight;
+    const viewH = window.innerHeight;
+    cachedMaxScroll = Math.max(1, scrollH - viewH);
+  }
+  updateMaxScroll();
+
+  let resizeDebounce = null;
+  window.addEventListener('resize', () => {
+    if (resizeDebounce) clearTimeout(resizeDebounce);
+    resizeDebounce = setTimeout(() => {
+      updateMaxScroll();
+      onScroll();
+    }, 150);
+  });
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      updateMaxScroll();
+      onScroll();
+    }, 200);
+  });
+
   function onScroll() {
     if (state.isTeleporting) return;
 
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const maxScroll = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
-    if (maxScroll <= 0) return;
+    const scrollTop = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+    if (cachedMaxScroll <= 0) updateMaxScroll();
 
-    const p = Math.max(0, Math.min(1, scrollTop / maxScroll));
+    const p = Math.max(0, Math.min(1, scrollTop / cachedMaxScroll));
     state.progress = p;
 
     // Update HUD percentage
@@ -405,28 +429,28 @@ document.addEventListener('DOMContentLoaded', () => {
       hudPctText.textContent = `${pct < 10 ? '0' : ''}${pct}%`;
     }
 
-    // Determine Active Step & Title
+    // Determine Active Step & Title with agile interlude boundaries
     if (p < 0.10) {
       setActiveStep('step-scene-1', 'ACT I · THE SEALED SUMMONS');
     } else if (p < 0.20) {
       setActiveStep('step-scene-2', 'ACT II · CALL TO THE PODIUM');
-    } else if (p < 0.28) {
+    } else if (p < 0.27) {
       setActiveStep('step-scene-3', 'ACT III · RISE OF THE STAGE');
-    } else if (p < 0.34) {
+    } else if (p < 0.295) {
       setActiveStep('step-interlude-1a', 'INTERLUDE I · ABOUT THE AGENDA');
-    } else if (p < 0.40) {
+    } else if (p < 0.320) {
       setActiveStep('step-interlude-1b', 'INTERLUDE I · 5W + 1H ESSENTIALS');
-    } else if (p < 0.46) {
+    } else if (p < 0.345) {
       setActiveStep('step-interlude-1c', 'INTERLUDE I · PURPOSE & ADJUDICATION');
-    } else if (p < 0.54) {
+    } else if (p < 0.44) {
       setActiveStep('step-scene-4', 'ACT IV · ARCHITECTS & LEADERS');
-    } else if (p < 0.66) {
+    } else if (p < 0.54) {
       setActiveStep('step-interlude-2', 'INTERLUDE II · A TIME TO REMEMBER');
-    } else if (p < 0.74) {
+    } else if (p < 0.64) {
       setActiveStep('step-scene-5', 'ACT V · 3D CROWN PHILOSOPHY');
-    } else if (p < 0.88) {
+    } else if (p < 0.78) {
       setActiveStep('step-interlude-3', 'INTERLUDE III · 15 SCENARIOS & JUDGES');
-    } else if (p < 0.94) {
+    } else if (p < 0.89) {
       setActiveStep('step-scene-7', 'ACT VI · THE GOLDEN MASQUERADE MASK');
     } else {
       setActiveStep('step-scene-8', 'ACT VII · WHO WILL BE THE WINNER?');
@@ -439,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Seamless Infinite Loop (at 99.8% jump back to 0.2%)
     if (state.infiniteLoop && p >= 0.998) {
       state.isTeleporting = true;
-      const targetScroll = maxScroll * 0.002;
+      const targetScroll = cachedMaxScroll * 0.002;
       window.scrollTo({ top: targetScroll, behavior: 'instant' });
       state.progress = 0.002;
       state.currentVideoTime = 0.2;
@@ -454,14 +478,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Smooth render loop for scrubbing
+  // Smooth render loop for scrubbing (anti-jitter threshold for mobile GPUs)
   function renderScrubLoop() {
     if (video && state.videoDuration > 0) {
       state.targetVideoTime = calculateVideoTimeFromScroll(state.progress);
       const diff = state.targetVideoTime - state.currentVideoTime;
 
-      if (Math.abs(diff) > 0.003) {
-        state.currentVideoTime += diff * 0.24;
+      if (Math.abs(diff) > 0.015) {
+        state.currentVideoTime += diff * 0.26;
         applySeek(state.currentVideoTime);
       }
     }
