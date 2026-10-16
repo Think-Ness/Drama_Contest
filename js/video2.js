@@ -136,6 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (preloader) {
         preloader.classList.add('dismissed');
       }
+      // Start theatrical soundtrack audio on genuine user entrance gesture
+      startTheatreAudio();
+
       // Warm up video playback for a split second to ensure GPU decoders are engaged
       if (video) {
         video.currentTime = 0.05;
@@ -146,6 +149,50 @@ document.addEventListener('DOMContentLoaded', () => {
         ambientVideo.play().then(() => ambientVideo.pause()).catch(() => {});
       }
     }, 450);
+  }
+
+  // ─── THEATRICAL SOUNDTRACK AUDIO CONTROLLER ───
+  const theatreAudio = document.getElementById('theatre-audio');
+  const audioPill = document.getElementById('theatre-audio-pill');
+  const audioPillLabel = document.getElementById('audio-pill-label');
+  let isAudioPlaying = false;
+
+  function startTheatreAudio() {
+    if (!theatreAudio) return;
+    theatreAudio.volume = 0.75;
+    theatreAudio.play().then(() => {
+      isAudioPlaying = true;
+      if (audioPill) audioPill.classList.add('playing');
+      if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: PLAYING';
+    }).catch((err) => {
+      console.warn('Audio playback waiting for interaction:', err);
+      isAudioPlaying = false;
+      if (audioPill) audioPill.classList.remove('playing');
+      if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: MUTED';
+    });
+  }
+
+  function toggleTheatreAudio() {
+    if (!theatreAudio) return;
+    if (theatreAudio.paused || !isAudioPlaying) {
+      theatreAudio.play().then(() => {
+        isAudioPlaying = true;
+        if (audioPill) audioPill.classList.add('playing');
+        if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: PLAYING';
+      }).catch(() => {});
+    } else {
+      theatreAudio.pause();
+      isAudioPlaying = false;
+      if (audioPill) audioPill.classList.remove('playing');
+      if (audioPillLabel) audioPillLabel.textContent = 'ORCHESTRA: MUTED';
+    }
+  }
+
+  if (audioPill) {
+    audioPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleTheatreAudio();
+    });
   }
 
   if (btnEnterTheatre) {
